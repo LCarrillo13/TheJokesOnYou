@@ -79,6 +79,6 @@ public class PlayerMovement : MonoBehaviour
         moveSpeed = idleSpeed;
         player.playerAnimation.FallAnimation();
         direction += Physics.gravity * 0.005f;
-        controller.Move(direction * Time.deltaTime);     
+        controller.Move(direction * Time.deltaTime);
     }
 }
