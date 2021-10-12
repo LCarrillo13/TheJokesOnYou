@@ -25,7 +25,9 @@ public class PlayerMovement : MonoBehaviour
     void Move()
     {
         float moveY = Input.GetAxis("Vertical");
-        direction = new Vector3(0, moveY, 0);
+        float moveX = Input.GetAxis("Horizontal");
+
+        direction = new Vector3(moveX, moveY, 0);
         direction = transform.TransformDirection(direction);
 
         if (direction != Vector3.zero && Input.GetKey(KeyCode.LeftShift))
@@ -45,9 +47,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         direction *= moveSpeed;
-
-        //if (!controller.isGrounded) direction += Physics.gravity;
-
         controller.Move(direction * Time.deltaTime);
     }
 }
