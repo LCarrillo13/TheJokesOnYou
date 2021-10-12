@@ -7,8 +7,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float idleSpeed;
     [SerializeField] float slowClimbSpeed;
     [SerializeField] float fastClimbSpeed;
+    [SerializeField] LayerMask climbableLayer;
+    [SerializeField] Vector3 raycastOffset;
     float moveSpeed;
     Vector3 direction;
+    RaycastHit hit;
 
     void Awake()
     {
@@ -19,7 +22,15 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         if (!player.canMove) return; // Guard Clause prevents unnecessary update cycles until the if statement returns false
-        Move();
+
+        if (Climbable())
+        {
+            Move(); 
+        }
+        else
+        {
+            Fall();
+        }
     }
 
     void Move()
@@ -48,5 +59,26 @@ public class PlayerMovement : MonoBehaviour
 
         direction *= moveSpeed;
         controller.Move(direction * Time.deltaTime);
+    }
+
+    bool Climbable()
+    {
+        Debug.DrawRay(transform.position + raycastOffset, Vector3.forward, Color.red, 2);
+        if (Physics.Raycast(transform.position + raycastOffset, Vector3.forward, out hit, 2, climbableLayer))
+        {
+            if (hit.collider)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void Fall()
+    {
+        moveSpeed = idleSpeed;
+        player.playerAnimation.FallAnimation();
+        direction += Physics.gravity * 0.005f;
+        controller.Move(direction * Time.deltaTime);     
     }
 }

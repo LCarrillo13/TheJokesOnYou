@@ -14,6 +14,7 @@ public class PlayerAnimation : MonoBehaviour
     }
 
     public void IdleAnimation() => animator.SetFloat("Speed", 0, smoothness, Time.deltaTime);
-    public void SlowClimbAnimation() => animator.SetFloat("Speed", 0.5f, smoothness, Time.deltaTime);
-    public void FastClimbAnimation() => animator.SetFloat("Speed", 1, smoothness, Time.deltaTime);
+    public void SlowClimbAnimation() => animator.SetFloat("Speed", 0.33f, smoothness, Time.deltaTime);
+    public void FastClimbAnimation() => animator.SetFloat("Speed", 0.66f, smoothness, Time.deltaTime);
+    public void FallAnimation() => animator.SetFloat("Speed", 1, smoothness, Time.deltaTime);
 }
