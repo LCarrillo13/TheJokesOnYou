@@ -24,8 +24,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {
-        float moveZ = Input.GetAxis("Vertical");
-        direction = new Vector3(0, 0, moveZ);
+        float moveY = Input.GetAxis("Vertical");
+        direction = new Vector3(0, moveY, 0);
         direction = transform.TransformDirection(direction);
 
         if (direction != Vector3.zero && Input.GetKey(KeyCode.LeftShift))
