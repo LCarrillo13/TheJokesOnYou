@@ -1,3 +1,5 @@
+using System;
+
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -8,7 +10,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float slowClimbSpeed;
     [SerializeField] float fastClimbSpeed;
     [SerializeField] LayerMask climbableLayer;
+    [SerializeField] LayerMask obstacleLayer;
+    private String layerString = "Obstacle";
     [SerializeField] Vector3 raycastOffset;
+    [SerializeField] bool hasCollided = false;
     float moveSpeed;
     Vector3 direction;
     RaycastHit hit;
@@ -17,13 +22,14 @@ public class PlayerMovement : MonoBehaviour
     {
         player = GetComponent<Player>();
         controller = GetComponent<CharacterController>();
+        Debug.Log(layerString);
     }
 
     void Update()
     {
         if (!player.canMove) return; // Guard Clause prevents unnecessary update cycles until the if statement returns false
 
-        if (Climbable())
+        if (Climbable() && !hasCollided)
         {
             Move(); 
         }
@@ -31,6 +37,11 @@ public class PlayerMovement : MonoBehaviour
         {
             Fall();
         }
+        //Redundant
+        // if(hasCollided)
+        // {
+        //     Fall();
+        // }
     }
 
     void Move()
@@ -80,5 +91,17 @@ public class PlayerMovement : MonoBehaviour
         player.playerAnimation.FallAnimation();
         direction += Physics.gravity * 0.005f;
         controller.Move(direction * Time.deltaTime);
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        
+        if(other.gameObject.CompareTag("Obstacle"))
+        {
+            Debug.Log("Hit by obstacle");
+            //Debug.Log(layerString);
+            hasCollided = true;
+
+        }
     }
 }
