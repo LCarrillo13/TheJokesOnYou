@@ -4,14 +4,16 @@ public class PlayerMovement : MonoBehaviour
 {
     Player player;
     CharacterController controller;
-    [SerializeField] float idleSpeed;
-    [SerializeField] float slowClimbSpeed;
-    [SerializeField] float fastClimbSpeed;
+    [SerializeField] float slowSpeed;
+    [SerializeField] float fastSpeed;
+    [SerializeField] float walkSpeed;
     [SerializeField] LayerMask climbableLayer;
-    [SerializeField] Vector3 raycastOffset;
+    [SerializeField] Vector3 climbableOffset;
     float moveSpeed;
     Vector3 direction;
     RaycastHit hit;
+    [Header("Controls")]
+    [SerializeField] KeyCode drop;
 
     void Awake()
     {
@@ -21,83 +23,65 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // IF space button held down AND surface in front of them is climbable
-        if (Input.GetKey(KeyCode.Space) && Climbable())
+        if (Input.GetKey(drop))
         {
-            // player can climb
-            Move();
+            Fall();
         }
-        // ELSE the player will fall
-        else Fall();
+        else
+        {
+            Climb();
+        }
     }
 
-    void Move()
+    public void Climb()
     {
-        // vertical and horizontal inputs
-        float moveY = Input.GetAxis("Vertical");
-        float moveX = Input.GetAxis("Horizontal");
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+        direction = new Vector3(x, y, 0);
 
-        // puts inputs into Vector3
-        direction = new Vector3(moveX, moveY, 0);
-
-        // the Vector3 is changed to World Space
+        // direction is converted to World Space
         direction = transform.TransformDirection(direction);
 
-        // IF player is moving AND left shift button is held down
         if (direction != Vector3.zero && Input.GetKey(KeyCode.LeftShift))
         {
-            // player climbs fast
-            moveSpeed = fastClimbSpeed;
-            player.playerAnimation.FastClimbAnimation();
+            moveSpeed = fastSpeed;
+            player.playerAnimation.FastClimb();
         }
-        // ELSE IF player is moving AND left shift button isn't held down
         else if (direction != Vector3.zero && !Input.GetKey(KeyCode.LeftShift))
         {
-            // player climbs normally
-            moveSpeed = slowClimbSpeed;
-            player.playerAnimation.SlowClimbAnimation();
+            moveSpeed = slowSpeed;
+            player.playerAnimation.SlowClimb();
         }
         // ELSE IF player is not moving
         else if (direction == Vector3.zero)
         {
-            // player is idle
-            moveSpeed = idleSpeed;
-            player.playerAnimation.IdleAnimation();
+            moveSpeed = 0;
+            player.playerAnimation.IdleClimb();
         }
 
-        // makes player move at correct speed
-        direction *= moveSpeed;
-
         // moves the character controller
+        direction *= moveSpeed;
         controller.Move(direction * Time.deltaTime);
     }
 
     // checks if surface in front of player is climbable
-    bool Climbable()
+    bool isClimbable()
     {
-        #if UNITY_EDITOR
-        Debug.DrawRay(transform.position + raycastOffset, Vector3.forward, Color.red, 2);
-        #endif
+        Debug.DrawRay(transform.position + climbableOffset, Vector3.forward, Color.red, 2);
 
         // ray is casted forward from player and attempts to hit something on the 'climbableLayer'
-        if (Physics.Raycast(transform.position + raycastOffset, Vector3.forward, out hit, 2, climbableLayer))
+        if (Physics.Raycast(transform.position + climbableOffset, Vector3.forward, out hit, 2, climbableLayer))
         {
-            // if it hits something
-            if (hit.collider)
-            {
-                // player can climb here
-                return true;
-            }
+            if (hit.collider) return true;
         }
-        // player can't climb here
         return false;
     }
 
     void Fall()
     {
         // player becomes idle
-        moveSpeed = idleSpeed;
-        player.playerAnimation.FallAnimation();
+        moveSpeed = 0;
+        player.playerAnimation.Fall();
 
         // gravity is applied to the player
         direction += Physics.gravity * 0.005f;
