@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Tested {
+
+
 public class Test : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -15,4 +18,5 @@ public class Test : MonoBehaviour
     {
         
     }
+}
 }
