@@ -1,107 +1,127 @@
-using System;
-
 using UnityEngine;
+using Mirror;
+using TMPro;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
-    Player player;
     CharacterController controller;
-    [SerializeField] float idleSpeed;
-    [SerializeField] float slowClimbSpeed;
-    [SerializeField] float fastClimbSpeed;
+    [Header("Camera")]
+    [SerializeField] GameObject playerCamera;
+    [SerializeField] float slowSpeed, fastSpeed, idleSpeed;
     [SerializeField] LayerMask climbableLayer;
-    [SerializeField] LayerMask obstacleLayer;
-    private String layerString = "Obstacle";
-    [SerializeField] Vector3 raycastOffset;
-    [SerializeField] bool hasCollided = false;
+    [SerializeField] Vector3 climbableOffset;
     float moveSpeed;
     Vector3 direction;
     RaycastHit hit;
+    [Header("Controls")]
+    [SerializeField] KeyCode drop;
+    [Header("Animation")]
+    Animator animator;
+    [Tooltip("This controls how smooth the blend between animations is (a lower value means a quicker transition)")]
+    [SerializeField] float animationSmoothness;
+    [Header("Score")]
+    [SerializeField] float score;
+    [SerializeField] TextMeshProUGUI scoreText;
 
     void Awake()
     {
-        player = GetComponent<Player>();
         controller = GetComponent<CharacterController>();
-        Debug.Log(layerString);
+        animator = GetComponentInChildren<Animator>();
+    }
+
+    void Start()
+    {
+        // spawns a camera that follows the local player
+        if (isLocalPlayer)
+        {
+            GameObject c = Instantiate(playerCamera);
+            c.GetComponent<PlayerCamera>().target = transform;
+            c.gameObject.SetActive(true);
+
+            TextMeshProUGUI t = Instantiate(scoreText);
+            t.text = score.ToString("0");
+        }
     }
 
     void Update()
     {
-        if (!player.canMove) return; // Guard Clause prevents unnecessary update cycles until the if statement returns false
+        if (!isLocalPlayer) return;
 
-        if (Climbable() && !hasCollided)
-        {
-            Move(); 
-        }
-        else
+        if (Input.GetKey(drop))
         {
             Fall();
         }
-        //Redundant
-        // if(hasCollided)
-        // {
-        //     Fall();
-        // }
+        else
+        {
+            Climb();
+        }
     }
 
-    void Move()
+    #region Movement
+    public void Climb()
     {
-        float moveY = Input.GetAxis("Vertical");
-        float moveX = Input.GetAxis("Horizontal");
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+        direction = new Vector3(x, y, 0);
 
-        direction = new Vector3(moveX, moveY, 0);
+        // direction is converted to World Space
         direction = transform.TransformDirection(direction);
 
+        // 'Running'
         if (direction != Vector3.zero && Input.GetKey(KeyCode.LeftShift))
         {
-            moveSpeed = fastClimbSpeed;
-            player.playerAnimation.FastClimbAnimation();
+            moveSpeed = fastSpeed;
+            FastClimbAnimation();
         }
+        // 'Walking'
         else if (direction != Vector3.zero && !Input.GetKey(KeyCode.LeftShift))
         {
-            moveSpeed = slowClimbSpeed;
-            player.playerAnimation.SlowClimbAnimation();
+            moveSpeed = slowSpeed;
+            ClimbAnimation();
         }
+        // Idle
         else if (direction == Vector3.zero)
         {
-            moveSpeed = idleSpeed;
-            player.playerAnimation.IdleAnimation();
+            moveSpeed = 0;
+            IdleAnimation();
         }
 
+        // moves the character controller
         direction *= moveSpeed;
         controller.Move(direction * Time.deltaTime);
     }
 
-    bool Climbable()
+    // checks if surface in front of player is climbable
+    bool isClimbable()
     {
-        Debug.DrawRay(transform.position + raycastOffset, Vector3.forward, Color.red, 2);
-        if (Physics.Raycast(transform.position + raycastOffset, Vector3.forward, out hit, 2, climbableLayer))
+        Debug.DrawRay(transform.position + climbableOffset, Vector3.forward, Color.red, 2);
+
+        // ray is casted forward from player and attempts to hit something on the 'climbableLayer'
+        if (Physics.Raycast(transform.position + climbableOffset, Vector3.forward, out hit, 2, climbableLayer))
         {
-            if (hit.collider)
-            {
-                return true;
-            }
+            if (hit.collider) return true;
         }
         return false;
     }
 
     void Fall()
     {
-        moveSpeed = idleSpeed;
-        player.playerAnimation.FallAnimation();
+        // player becomes idle
+        moveSpeed = 0;
+        FallAnimation();
+
+        // gravity is applied to the player
         direction += Physics.gravity * 0.005f;
+
+        // player falls
         controller.Move(direction * Time.deltaTime);
     }
+    #endregion
 
-    private void OnCollisionEnter(Collision other)
-    {
-        
-        if(other.gameObject.CompareTag("Obstacle"))
-        {
-            Debug.Log("Hit by obstacle");
-            //Debug.Log(layerString);
-            hasCollided = true;
-
-        }
-    }
+    #region Animation
+    public void IdleAnimation() => animator.SetFloat("Speed", 0, animationSmoothness, Time.deltaTime);
+    public void ClimbAnimation() => animator.SetFloat("Speed", 0.25f, animationSmoothness, Time.deltaTime);
+    public void FastClimbAnimation() => animator.SetFloat("Speed", 0.5f, animationSmoothness, Time.deltaTime);
+    public void FallAnimation() => animator.SetFloat("Speed", 1, animationSmoothness, Time.deltaTime);
+    #endregion
 }

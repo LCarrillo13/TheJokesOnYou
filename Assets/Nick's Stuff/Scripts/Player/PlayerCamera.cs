@@ -1,11 +1,15 @@
 using UnityEngine;
+using Mirror;
 
-public class PlayerCamera : MonoBehaviour
-{
-    [SerializeField] Transform player;
+public class PlayerCamera : NetworkBehaviour
+{ 
+    public Transform target;
     [SerializeField] Vector3 offset;
     [SerializeField] float speed;
 
-    void LateUpdate() => NormalCamera();
-    void NormalCamera() => transform.position = Vector3.Lerp(transform.position, player.position + offset, speed * Time.deltaTime);
+    // Camera movement is updated at the end of each frame
+    void LateUpdate() => MoveCamera();
+
+    // camera smoothly moves to follow the player
+    void MoveCamera() => transform.position = Vector3.Lerp(transform.position, target.position + offset, speed * Time.deltaTime);
 }
