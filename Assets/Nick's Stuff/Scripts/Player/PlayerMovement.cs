@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using TMPro;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -18,6 +19,9 @@ public class PlayerMovement : NetworkBehaviour
     Animator animator;
     [Tooltip("This controls how smooth the blend between animations is (a lower value means a quicker transition)")]
     [SerializeField] float animationSmoothness;
+    [Header("Score")]
+    [SerializeField] float score;
+    [SerializeField] TextMeshProUGUI scoreText;
 
     void Awake()
     {
@@ -33,6 +37,9 @@ public class PlayerMovement : NetworkBehaviour
             GameObject c = Instantiate(playerCamera);
             c.GetComponent<PlayerCamera>().target = transform;
             c.gameObject.SetActive(true);
+
+            TextMeshProUGUI t = Instantiate(scoreText);
+            t.text = score.ToString("0");
         }
     }
 
