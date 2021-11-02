@@ -1,12 +1,12 @@
 using UnityEngine;
+using Mirror;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
-    Player player;
     CharacterController controller;
-    [SerializeField] float slowSpeed;
-    [SerializeField] float fastSpeed;
-    [SerializeField] float walkSpeed;
+    [Header("Camera")]
+    [SerializeField] GameObject playerCamera;
+    [SerializeField] float slowSpeed, fastSpeed, idleSpeed;
     [SerializeField] LayerMask climbableLayer;
     [SerializeField] Vector3 climbableOffset;
     float moveSpeed;
@@ -14,15 +14,32 @@ public class PlayerMovement : MonoBehaviour
     RaycastHit hit;
     [Header("Controls")]
     [SerializeField] KeyCode drop;
+    [Header("Animation")]
+    Animator animator;
+    [Tooltip("This controls how smooth the blend between animations is (a lower value means a quicker transition)")]
+    [SerializeField] float animationSmoothness;
 
     void Awake()
     {
-        player = GetComponent<Player>();
         controller = GetComponent<CharacterController>();
+        animator = GetComponentInChildren<Animator>();
+    }
+
+    void Start()
+    {
+        // spawns a camera that follows the local player
+        if (isLocalPlayer)
+        {
+            GameObject c = Instantiate(playerCamera);
+            c.GetComponent<PlayerCamera>().target = transform;
+            c.gameObject.SetActive(true);
+        }
     }
 
     void Update()
     {
+        if (!isLocalPlayer) return;
+
         if (Input.GetKey(drop))
         {
             Fall();
@@ -33,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    #region Movement
     public void Climb()
     {
         float x = Input.GetAxis("Horizontal");
@@ -42,21 +60,23 @@ public class PlayerMovement : MonoBehaviour
         // direction is converted to World Space
         direction = transform.TransformDirection(direction);
 
+        // 'Running'
         if (direction != Vector3.zero && Input.GetKey(KeyCode.LeftShift))
         {
             moveSpeed = fastSpeed;
-            player.playerAnimation.FastClimb();
+            FastClimbAnimation();
         }
+        // 'Walking'
         else if (direction != Vector3.zero && !Input.GetKey(KeyCode.LeftShift))
         {
             moveSpeed = slowSpeed;
-            player.playerAnimation.SlowClimb();
+            ClimbAnimation();
         }
-        // ELSE IF player is not moving
+        // Idle
         else if (direction == Vector3.zero)
         {
             moveSpeed = 0;
-            player.playerAnimation.IdleClimb();
+            IdleAnimation();
         }
 
         // moves the character controller
@@ -81,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // player becomes idle
         moveSpeed = 0;
-        player.playerAnimation.Fall();
+        FallAnimation();
 
         // gravity is applied to the player
         direction += Physics.gravity * 0.005f;
@@ -89,4 +109,12 @@ public class PlayerMovement : MonoBehaviour
         // player falls
         controller.Move(direction * Time.deltaTime);
     }
+    #endregion
+
+    #region Animation
+    public void IdleAnimation() => animator.SetFloat("Speed", 0, animationSmoothness, Time.deltaTime);
+    public void ClimbAnimation() => animator.SetFloat("Speed", 0.25f, animationSmoothness, Time.deltaTime);
+    public void FastClimbAnimation() => animator.SetFloat("Speed", 0.5f, animationSmoothness, Time.deltaTime);
+    public void FallAnimation() => animator.SetFloat("Speed", 1, animationSmoothness, Time.deltaTime);
+    #endregion
 }
