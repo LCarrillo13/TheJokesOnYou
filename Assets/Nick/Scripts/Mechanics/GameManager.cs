@@ -6,7 +6,8 @@ using TMPro;
 public class GameManager : NetworkBehaviour
 {
     public enum GameMode { Race, Survival }
-    [SerializeField] GameMode currentGameMode;
+    public GameMode currentGameMode;
+
     [SerializeField] int gameModeIndex;
     public bool hasStarted;
     [SerializeField] GameObject matchUI, gameUI, resultsUI;

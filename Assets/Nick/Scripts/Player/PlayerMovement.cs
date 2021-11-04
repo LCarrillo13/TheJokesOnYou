@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Attributes")]
     [SerializeField] float speed;
+    [SerializeField] bool canMove;
     [Header("Controls")]
     [SerializeField] List<KeyCode> controls = new List<KeyCode>();
     [SerializeField] List<Transform> positions = new List<Transform>();
@@ -28,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // makes sure each client controls their own player
         // if (!isLocalPlayer) return;
-        AutomaticMovement();
+        if (canMove) AutomaticMovement();
         if (!hasTeleported) Teleport();
         TeleportCooldown();
         CheckForWin();
