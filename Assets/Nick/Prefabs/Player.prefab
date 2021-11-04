@@ -180,9 +180,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  teleportTimerText: {fileID: 0}
   teleportDelay: 2
-  playerCamera: {fileID: 0}
+  charged: {r: 0.4, g: 0.8352941, b: 0.85882354, a: 1}
+  recharging: {r: 0.6320754, g: 0.13416697, b: 0.13416697, a: 0}
+  playerMaterial: {fileID: 2100000, guid: 86b602f6c5350ad4baf9413d23a9f3c1, type: 2}
   climbableLayer:
     serializedVersion: 2
     m_Bits: 128

@@ -11,10 +11,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] List<KeyCode> controls = new List<KeyCode>();
     [SerializeField] List<Transform> positions = new List<Transform>();
     [Header("Teleportation")]
-    [SerializeField] TextMeshProUGUI teleportTimerText;
     [SerializeField] float teleportDelay;
     bool hasTeleported;
     float teleportTimer;
+    [SerializeField] Color charged, recharging;
+    [SerializeField] Material playerMaterial;
     [Header("Climbable Check")]
     [SerializeField] LayerMask climbableLayer;
     RaycastHit hit;
@@ -41,10 +42,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, Vector3.forward, out hit, 5, climbableLayer))
         {
-            if (hit.collider)
-            {
-                transform.Translate(Vector3.up * speed * Time.deltaTime);
-            }
+            if (hit.collider) transform.Translate(Vector3.up * speed * Time.deltaTime);
         }
     }
 
@@ -82,12 +80,12 @@ public class PlayerMovement : MonoBehaviour
             {
                 hasTeleported = false;
                 teleportTimer = 0;
-                teleportTimerText.text = "Teleportation Ready!";
+                playerMaterial.color = charged;
             }
             else
             {
                 teleportTimer += Time.deltaTime;
-                teleportTimerText.text = "Recharging teleport!";
+                playerMaterial.color = recharging;
             }
         }
     }
