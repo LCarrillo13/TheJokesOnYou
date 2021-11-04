@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;  
 using UnityEngine;
-using TMPro;
+using Mirror;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
+    #region Variables
+    [Header("Scripts")]
+    GameManager manager;
     [Header("Attributes")]
     [SerializeField] float speed;
     [Header("Controls")]
@@ -17,30 +20,42 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Color charged, recharging;
     [SerializeField] Material playerMaterial;
     [Header("Climbable Check")]
+    [SerializeField] Vector3 raycastOffset;
     [SerializeField] LayerMask climbableLayer;
     RaycastHit hit;
     Scene scene;
+    [Header("Camera")]
+    [SerializeField] GameObject playerCameraPrefab;
+    #endregion
+
+    void Awake() => manager = GameObject.Find("Manager - Game").GetComponent<GameManager>();
 
     void Start()
     {
         scene = SceneManager.GetActiveScene();
+
+        if (!isLocalPlayer) return;
+
         HideLockCursor();
+        SpawnCamera();
+        PopulatePositions();
     }
 
     void Update()
     {
         // makes sure each client controls their own player
-        // if (!isLocalPlayer) return;
+        if (!isLocalPlayer) return;
+
         if (scene.name == "Race") AutomaticMovement();
         if (!hasTeleported) Teleport();
         TeleportCooldown();
-        CheckForWin();
     }
 
     // players are always moving upwards if they are touching a 'climbable' layer
     void AutomaticMovement()
     {
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 5, climbableLayer))
+        // Debug.DrawRay(transform.position + raycastOffset, Vector3.forward, Color.red, 5);
+        if (Physics.Raycast(transform.position + raycastOffset, Vector3.forward, out hit, 5, climbableLayer))
         {
             if (hit.collider) transform.Translate(Vector3.up * speed * Time.deltaTime);
         }
@@ -97,20 +112,19 @@ public class PlayerMovement : MonoBehaviour
         Cursor.visible = false;
     }
 
-    // checks if player has reach the finish line in race mode
-    void CheckForWin()
+    // gives the player their own camera
+    void SpawnCamera()
     {
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit))
-        {
-            if (hit.collider.CompareTag("Finish"))
-            {
-                GameEnd();
-            }
-        }
+        GameObject a = Instantiate(playerCameraPrefab);
+        a.GetComponent<PlayerCamera>().target = this.transform;
     }
 
-    void GameEnd()
+    // adds the positions used to move to the list
+    void PopulatePositions()
     {
-        print(this.gameObject.name + " has won the game!");
+        positions[0] = GameObject.Find("Position1").transform;
+        positions[1] = GameObject.Find("Position2").transform;
+        positions[2] = GameObject.Find("Position3").transform;
+        positions[3] = GameObject.Find("Position4").transform;
     }
 }

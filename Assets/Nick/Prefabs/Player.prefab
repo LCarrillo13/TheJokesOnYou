@@ -173,6 +173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def905c0e5c2b3b439cc4180bbade2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   speed: 5
   controls: 31000000320000003300000034000000
   positions:
@@ -184,6 +186,8 @@ MonoBehaviour:
   charged: {r: 0.4, g: 0.8352941, b: 0.85882354, a: 1}
   recharging: {r: 0.6320754, g: 0.13416697, b: 0.13416697, a: 0}
   playerMaterial: {fileID: 2100000, guid: 86b602f6c5350ad4baf9413d23a9f3c1, type: 2}
+  raycastOffset: {x: 0, y: 0.5, z: 0}
   climbableLayer:
     serializedVersion: 2
     m_Bits: 128
+  playerCameraPrefab: {fileID: 1096464972632406442, guid: 1b2aadc4bc6065f4eb7365bd35da8245, type: 3}
