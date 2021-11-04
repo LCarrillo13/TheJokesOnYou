@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;  
 using UnityEngine;
 using TMPro;
 
@@ -6,7 +7,6 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Attributes")]
     [SerializeField] float speed;
-    [SerializeField] bool canMove;
     [Header("Controls")]
     [SerializeField] List<KeyCode> controls = new List<KeyCode>();
     [SerializeField] List<Transform> positions = new List<Transform>();
@@ -16,20 +16,21 @@ public class PlayerMovement : MonoBehaviour
     bool hasTeleported;
     float teleportTimer;
     [Header("Climbable Check")]
-    [SerializeField] Camera playerCamera;
     [SerializeField] LayerMask climbableLayer;
     RaycastHit hit;
-    Rigidbody rb;
+    Scene scene;
 
-    void Awake() => rb = GetComponent<Rigidbody>();
-
-    void Start() => HideLockCursor();
+    void Start()
+    {
+        scene = SceneManager.GetActiveScene();
+        HideLockCursor();
+    }
 
     void Update()
     {
         // makes sure each client controls their own player
         // if (!isLocalPlayer) return;
-        if (canMove) AutomaticMovement();
+        if (scene.name == "Race") AutomaticMovement();
         if (!hasTeleported) Teleport();
         TeleportCooldown();
         CheckForWin();
@@ -38,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
     // players are always moving upwards if they are touching a 'climbable' layer
     void AutomaticMovement()
     {
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit, climbableLayer))
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 5, climbableLayer))
         {
             if (hit.collider)
             {

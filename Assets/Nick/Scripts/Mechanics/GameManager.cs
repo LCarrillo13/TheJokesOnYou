@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 using UnityEngine.SceneManagement;
+using Mirror;
 
 public class GameManager : NetworkBehaviour
 {
@@ -14,6 +12,18 @@ public class GameManager : NetworkBehaviour
 
     public void StartGame()
     {
-
+        switch (mode)
+        {
+            case Mode.Race:
+                ChangeScene("Race");
+                break;
+            case Mode.Survival:
+                ChangeScene("Survival");
+                break;
+            default:
+                break;
+        }
     }
+
+    void ChangeScene(string name) => SceneManager.LoadScene(name);
 }
