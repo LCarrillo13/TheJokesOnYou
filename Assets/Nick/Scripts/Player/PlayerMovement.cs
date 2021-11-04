@@ -98,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
         Cursor.visible = false;
     }
 
+    // checks if player has reach the finish line in race mode
     void CheckForWin()
     {
         if (Physics.Raycast(transform.position, Vector3.forward, out hit))
@@ -113,6 +114,4 @@ public class PlayerMovement : MonoBehaviour
     {
         print(this.gameObject.name + " has won the game!");
     }
-
-
 }
