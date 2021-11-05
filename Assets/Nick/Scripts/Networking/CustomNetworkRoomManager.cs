@@ -16,6 +16,11 @@ using Mirror;
 // NetworkRoomManager is derived from NetworkManager, and so it implements many of the virtual functions provided by the NetworkManager class.
 public class CustomNetworkRoomManager : NetworkRoomManager
 {
+    [SerializeField] GameManager manager;
+    [Scene] public string raceScene, survivalScene;
+
+    public override void Awake() => manager = GameObject.Find("Manager - Game").GetComponent<GameManager>();
+
     #region Server Callbacks
     // This is called on the server when the server is started - including when a host is started.
     public override void OnRoomStartServer() 
@@ -42,7 +47,10 @@ public class CustomNetworkRoomManager : NetworkRoomManager
 
     // This is called on the server when a networked scene finishes loading.
     // sceneName - Name of the new scene.
-    public override void OnRoomServerSceneChanged(string sceneName) { }
+    public override void OnRoomServerSceneChanged(string sceneName) 
+    {
+        manager = GameObject.Find("Manager - Game").GetComponent<GameManager>();
+    }
 
     // This allows customization of the creation of the room-player object on the server.
     // By default the roomPlayerPrefab is used to create the room-player, but this function allows that behaviour to be customized.
@@ -87,7 +95,17 @@ public class CustomNetworkRoomManager : NetworkRoomManager
     // The default implementation of this function uses ServerChangeScene() to switch to the game player scene. By implementing this callback you can customize what happens when all the players in the room are ready, such as adding a countdown or a confirmation for a group leader.
     public override void OnRoomServerPlayersReady()
     {
-        base.OnRoomServerPlayersReady();
+        switch (manager.mode)
+        {
+            case GameManager.Mode.Race:
+                ServerChangeScene(raceScene);
+                break;
+            case GameManager.Mode.Survival:
+                ServerChangeScene(survivalScene);
+                break;
+            default:
+                break;
+        }
     }
 
     // This is called on the server when CheckReadyToBegin finds that players are not ready

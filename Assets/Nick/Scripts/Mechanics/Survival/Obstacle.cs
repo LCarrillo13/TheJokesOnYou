@@ -12,7 +12,8 @@ public class Obstacle : MonoBehaviour
     {    
         if(other.collider.CompareTag("Player"))
         {
-            print(other.gameObject.name + " has died!");
+            Destroy(other.gameObject.GetComponent<PlayerMovement>().tempCamera);
+            Destroy(other.gameObject);
         }
     }
 

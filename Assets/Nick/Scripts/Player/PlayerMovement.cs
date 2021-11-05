@@ -26,6 +26,7 @@ public class PlayerMovement : NetworkBehaviour
     Scene scene;
     [Header("Camera")]
     [SerializeField] GameObject playerCameraPrefab;
+    public GameObject tempCamera;
     #endregion
 
     void Awake() => manager = GameObject.Find("Manager - Game").GetComponent<GameManager>();
@@ -117,6 +118,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         GameObject a = Instantiate(playerCameraPrefab);
         a.GetComponent<PlayerCamera>().target = this.transform;
+        tempCamera = a;
     }
 
     // adds the positions used to move to the list
