@@ -1859,11 +1859,7 @@ MonoBehaviour:
   RoomScene: Assets/Nick/Scenes/Room.unity
   GameplayScene: Assets/Nick/Scenes/Race.unity
   _allPlayersReady: 0
-  roomSlots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  roomSlots: []
   clientIndex: 0
 --- !u!114 &954170705
 MonoBehaviour:
