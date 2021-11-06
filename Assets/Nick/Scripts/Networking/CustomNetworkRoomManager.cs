@@ -17,7 +17,7 @@ using Mirror;
 public class CustomNetworkRoomManager : NetworkRoomManager
 {
     [SerializeField] GameManager manager;
-    [Scene] public string raceScene, survivalScene;
+    [Scene] public string raceScene, survivalScene, thirdScene;
 
     public override void Awake() => manager = GameObject.Find("Manager - Game").GetComponent<GameManager>();
 
@@ -104,6 +104,9 @@ public class CustomNetworkRoomManager : NetworkRoomManager
                 ServerChangeScene(survivalScene);
                 break;
             default:
+                break;
+            case GameManager.Mode.Mode3:
+                ServerChangeScene(thirdScene);
                 break;
         }
     }

@@ -1,3 +1,5 @@
+using Mirror;
+
 using UnityEngine;
 
 public class ObstacleDestroyer : MonoBehaviour
@@ -6,7 +8,7 @@ public class ObstacleDestroyer : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            Destroy(other.gameObject);
+            NetworkServer.Destroy(other.gameObject);
         }
     }
 }

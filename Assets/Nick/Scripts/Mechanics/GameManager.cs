@@ -4,7 +4,7 @@ using Mirror;
 
 public class GameManager : NetworkBehaviour
 {
-    public enum Mode { Race, Survival }
+    public enum Mode { Race, Survival, Mode3 }
 
     public Mode mode;
 
