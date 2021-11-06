@@ -2632,7 +2632,7 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Survival
       m_Image: {fileID: 0}
-    - m_Text: ???
+    - m_Text: Mode 3
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

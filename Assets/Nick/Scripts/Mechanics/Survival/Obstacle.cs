@@ -1,6 +1,8 @@
+using Mirror;
+
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour
+public class Obstacle : NetworkBehaviour
 {
     [SerializeField] float speed;
 
@@ -12,8 +14,8 @@ public class Obstacle : MonoBehaviour
     {    
         if(other.collider.CompareTag("Player"))
         {
-            Destroy(other.gameObject.GetComponent<PlayerMovement>().tempCamera);
-            Destroy(other.gameObject);
+            NetworkServer.Destroy(other.gameObject.GetComponent<PlayerMovement>().tempCamera);
+            NetworkServer.Destroy(other.gameObject);
         }
     }
 
