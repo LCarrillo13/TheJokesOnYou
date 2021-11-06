@@ -1,8 +1,9 @@
 using UnityEngine;
+using Mirror;
 using UnityEngine.UI;
 using TMPro;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     public enum GameMode { Race, Survival }
     [SerializeField] GameMode currentGameMode;
@@ -13,7 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] int mapIndex;
     [SerializeField] Slider timeLimitSlider, scoreLimitSlider;
     [SerializeField] TMP_Dropdown gameModeDropdown, mapDropdown;
-    [SerializeField] float timeLimit, scoreLimit;
+    public float timeLimit, scoreLimit;
     [SerializeField] TextMeshProUGUI timeLimitText, scoreLimitText;
     [Header("During Game")]
     [SerializeField] TextMeshProUGUI timeText;
@@ -24,7 +25,7 @@ public class GameManager : MonoBehaviour
         timeLimitText.text = "Time Limit : " + timeLimit.ToString("0");
         scoreLimit = scoreLimitSlider.value;
         scoreLimitText.text = "Score Limit : " + scoreLimit.ToString("0");
-        gameUI.SetActive(false);
+        
         resultsUI.SetActive(false);
     }
 
@@ -32,12 +33,18 @@ public class GameManager : MonoBehaviour
     {
         if (hasStarted)
         {
-            matchUI.SetActive(false);
-            gameUI.SetActive(true);
+            UpdateUI();
             StartGame();          
         }
 
         GameModeCheck();
+    }
+
+    [ClientRpc]
+    void UpdateUI()
+    {
+        matchUI.SetActive(false);
+        gameUI.SetActive(true);
     }
 
     #region Live Match Settings
@@ -51,6 +58,8 @@ public class GameManager : MonoBehaviour
         {
             timeLimit -= Time.deltaTime;
             timeText.text = timeLimit.ToString("0");
+
+            
         }
     }
 
@@ -98,7 +107,7 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    void GameEnd()
+    public void GameEnd()
     {
         gameUI.SetActive(false);
         resultsUI.SetActive(true);

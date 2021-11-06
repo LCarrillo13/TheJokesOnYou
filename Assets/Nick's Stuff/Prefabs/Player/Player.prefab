@@ -114,6 +114,8 @@ MonoBehaviour:
   climbableOffset: {x: 0, y: 0, z: 0}
   drop: 32
   animationSmoothness: 0.2
+  score: 0
+  scoreText: {fileID: 7730904984523219001, guid: f3003638d0c08ba4db8ad39bc11d028d, type: 3}
 --- !u!114 &5501285706347000097
 MonoBehaviour:
   m_ObjectHideFlags: 0

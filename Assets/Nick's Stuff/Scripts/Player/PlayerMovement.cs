@@ -4,6 +4,7 @@ using TMPro;
 
 public class PlayerMovement : NetworkBehaviour
 {
+    GameManager manager;
     CharacterController controller;
     [Header("Camera")]
     [SerializeField] GameObject playerCamera;
@@ -27,6 +28,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+        manager = GameObject.Find("Manager - Game").GetComponent<GameManager>();
     }
 
     void Start()
@@ -39,7 +41,9 @@ public class PlayerMovement : NetworkBehaviour
             c.gameObject.SetActive(true);
 
             TextMeshProUGUI t = Instantiate(scoreText);
+            t.transform.SetParent(GameObject.Find("Panel - Score").transform);
             t.text = score.ToString("0");
+            scoreText = t;
         }
     }
 
@@ -54,6 +58,11 @@ public class PlayerMovement : NetworkBehaviour
         else
         {
             Climb();
+        }
+
+        if (score >= manager.scoreLimit)
+        {
+            manager.GameEnd();
         }
     }
 
