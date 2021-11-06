@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using Mirror;
 
 using System.Collections.Generic;
-
+/*
 namespace NetworkGame.Networking
 {
 	public class CustomNetworkManager : NetworkManager
@@ -80,3 +80,4 @@ namespace NetworkGame.Networking
 		}
 	}
 }
+*/

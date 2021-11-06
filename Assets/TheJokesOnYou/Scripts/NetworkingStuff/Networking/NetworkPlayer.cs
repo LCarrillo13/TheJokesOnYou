@@ -2,7 +2,7 @@ using Mirror;
 
 using UnityEngine;
 
-
+/*
 namespace NetworkGame.Networking
 {
     [RequireComponent(typeof(PlayerController))]
@@ -145,3 +145,4 @@ namespace NetworkGame.Networking
         }
     }
 }
+*/
