@@ -6145,6 +6145,9 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   mode: 0
+  map: 0
+  dayMap: {fileID: 2800000, guid: 70010fda65ca24c4ba979a55c79d5777, type: 3}
+  nightMap: {fileID: 2800000, guid: 13cee923466d6504cb10938c8b9683f5, type: 3}
 --- !u!114 &1110198308
 MonoBehaviour:
   m_ObjectHideFlags: 0
