@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Nick/Scenes/Survival.unity
     guid: 230bf383ab546f045901257105066012
   - enabled: 1
+    path: Assets/Nick/Scenes/Gamemode3.unity
+    guid: 3f4d636c832b49c48974df563f612d37
+  - enabled: 1
     path: Assets/Nick/Scenes/Results.unity
     guid: 06fbd22d6ba7f36438dee7f90734bfdd
   m_configObjects: {}
