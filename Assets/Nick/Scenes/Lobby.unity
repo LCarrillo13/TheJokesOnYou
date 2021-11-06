@@ -1465,7 +1465,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  mode: 0
+  dayMap: {fileID: 0}
+  nightMap: {fileID: 0}
 --- !u!114 &688990689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1920,7 +1921,7 @@ MonoBehaviour:
   - {fileID: 3090840035635485865, guid: 6924747c9cea42148b6cdd7058f9aa33, type: 3}
   showRoomGUI: 1
   minPlayers: 1
-  roomPlayerPrefab: {fileID: 3311229528697106095, guid: deae2134a1d77704b9c595efe69767dd, type: 3}
+  roomPlayerPrefab: {fileID: 8661360273150935849, guid: deae2134a1d77704b9c595efe69767dd, type: 3}
   RoomScene: Assets/Nick/Scenes/Room.unity
   GameplayScene: Assets/Nick/Scenes/Race.unity
   _allPlayersReady: 0
@@ -1942,9 +1943,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b64f5911e0ad9854abeec4710e2dafd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showGUI: 1
+  showGUI: 0
   offsetX: 0
   offsetY: 0
+  hostButton: {fileID: 342295151}
+  connectButton: {fileID: 1409762196}
 --- !u!4 &954170706
 Transform:
   m_ObjectHideFlags: 0
