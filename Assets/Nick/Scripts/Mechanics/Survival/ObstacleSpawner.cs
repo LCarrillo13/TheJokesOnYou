@@ -12,8 +12,8 @@ public class ObstacleSpawner : MonoBehaviour
 
     void SpawnObstacle()
     {
-        Instantiate(obstaclePrefab, RandomSpawnPoint());
-        NetworkServer.Spawn(obstaclePrefab);
+        GameObject obstacle = Instantiate(obstaclePrefab, RandomSpawnPoint());
+        NetworkServer.Spawn(obstacle);
     }
 
 

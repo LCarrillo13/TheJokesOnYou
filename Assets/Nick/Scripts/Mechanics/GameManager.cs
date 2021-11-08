@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
+using TMPro;
 
 public class GameManager : NetworkBehaviour
 {
@@ -10,7 +11,7 @@ public class GameManager : NetworkBehaviour
     public static Mode mode;
     public static Map map;
 
-    public Texture dayMap, nightMap;
+    public Texture dayTexture, nightTexture;
 
     Scene scene;
 
@@ -19,21 +20,12 @@ public class GameManager : NetworkBehaviour
         scene = SceneManager.GetActiveScene();
 
         // spawns a specific map depending on what map is selected
-        if (scene.name != "Lobby" || scene.name != "Room")
+        if (scene.name != "Room")
         {
             MeshRenderer temp = GameObject.Find("Quad - Sky").GetComponent<MeshRenderer>();
-
-            if (map == Map.Day)
-            {
-                temp.material.mainTexture = dayMap;
-            }
-            else if (map == Map.Night)
-            {
-                temp.material.mainTexture = nightMap;
-            }
+            if (map == Map.Day) temp.material.mainTexture = dayTexture;
+            else if (map == Map.Night) temp.material.mainTexture = nightTexture;
         }
-
-
     }
 
     public void ChangeGameMode(int index) => mode = (Mode)index;

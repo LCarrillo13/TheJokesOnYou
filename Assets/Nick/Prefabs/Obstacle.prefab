@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 8741476101942886289}
   - component: {fileID: 1950003066343770729}
   - component: {fileID: 2030074950242212277}
-  - component: {fileID: -5826530257079758256}
-  - component: {fileID: 3230873359701640060}
+  - component: {fileID: -934285329041799541}
+  - component: {fileID: -211916515817849559}
+  - component: {fileID: -4762614335065793129}
   m_Layer: 0
   m_Name: Obstacle
   m_TagString: Obstacle
@@ -114,7 +115,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-5826530257079758256
+--- !u!114 &-934285329041799541
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,13 +124,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 3090840035635485865}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a01e476787a391c409fb9044c8ae337e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  speed: 5
---- !u!114 &3230873359701640060
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 6924747c9cea42148b6cdd7058f9aa33
+  hasSpawned: 0
+--- !u!114 &-211916515817849559
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,3 +161,18 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!114 &-4762614335065793129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3090840035635485865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01e476787a391c409fb9044c8ae337e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  speed: 5

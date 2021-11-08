@@ -222,7 +222,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1515834741}
+      - m_Target: {fileID: 929479285}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ChangeMap
         m_Mode: 0
@@ -1524,6 +1524,83 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 926775298}
   m_CullTransparentMesh: 1
+--- !u!1001 &929479283
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1431520415}
+    m_Modifications:
+    - target: {fileID: 446983893229660500, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446983893229660500, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.537364
+      objectReference: {fileID: 0}
+    - target: {fileID: 446983893229660500, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.8591051
+      objectReference: {fileID: 0}
+    - target: {fileID: 446983893229660500, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 14.937416
+      objectReference: {fileID: 0}
+    - target: {fileID: 446983893229660500, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 446983893229660500, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446983893229660500, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446983893229660500, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446983893229660500, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446983893229660500, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446983893229660500, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446983893229660503, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: sceneId
+      value: 228455885
+      objectReference: {fileID: 0}
+    - target: {fileID: 446983893229660521, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+      propertyPath: m_Name
+      value: Manager - Game
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+--- !u!4 &929479284 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 446983893229660500, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+  m_PrefabInstance: {fileID: 929479283}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &929479285 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 446983893229660502, guid: f942b548372f6c940b9099eb8825244f, type: 3}
+  m_PrefabInstance: {fileID: 929479283}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73fcb17f5b6a7fc42887c80042a9bf3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &980632333
 GameObject:
   m_ObjectHideFlags: 0
@@ -2355,79 +2432,12 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1515834739}
+  - {fileID: 929479284}
   - {fileID: 125328811}
   - {fileID: 1769237373}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1515834738
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1515834739}
-  - component: {fileID: 1515834741}
-  - component: {fileID: 1515834740}
-  m_Layer: 0
-  m_Name: Manager - Game
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1515834739
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1515834738}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1431520415}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1515834740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1515834738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 28350996
-  serverOnly: 0
-  visible: 0
-  m_AssetId: 
-  hasSpawned: 0
---- !u!114 &1515834741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1515834738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73fcb17f5b6a7fc42887c80042a9bf3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  mode: 0
-  map: 0
-  dayMap: {fileID: 2800000, guid: 70010fda65ca24c4ba979a55c79d5777, type: 3}
-  nightMap: {fileID: 2800000, guid: 13cee923466d6504cb10938c8b9683f5, type: 3}
 --- !u!1 &1565729954
 GameObject:
   m_ObjectHideFlags: 0
@@ -2637,7 +2647,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1515834741}
+      - m_Target: {fileID: 929479285}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ChangeGameMode
         m_Mode: 0
@@ -2771,7 +2781,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1515834741}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1

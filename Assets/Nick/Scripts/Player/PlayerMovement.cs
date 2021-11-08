@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;  
 using UnityEngine;
 using Mirror;
+using TMPro;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -10,6 +11,12 @@ public class PlayerMovement : NetworkBehaviour
     GameManager manager;
     [Header("Attributes")]
     [SerializeField] float speed;
+    public TextMesh nameTag;
+    [SyncVar(hook = nameof(OnNameChanged))] 
+    public string playerName;
+    [SyncVar(hook = nameof(OnColorChanged))] 
+    public Color playerColor = Color.white;
+    Material playerMaterialClone;
     [Header("Controls")]
     [SerializeField] List<KeyCode> controls = new List<KeyCode>();
     [SerializeField] List<Transform> positions = new List<Transform>();
@@ -17,8 +24,8 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] float teleportDelay;
     bool hasTeleported;
     float teleportTimer;
-    [SerializeField] Color charged, recharging;
-    [SerializeField] Material playerMaterial;
+    //[SerializeField] Color charged, recharging;
+    //[SerializeField] Material playerMaterial;
     [Header("Climbable Check")]
     [SerializeField] Vector3 raycastOffset;
     [SerializeField] LayerMask climbableLayer;
@@ -29,17 +36,24 @@ public class PlayerMovement : NetworkBehaviour
     public GameObject tempCamera;
     #endregion
 
-    void Awake() => manager = GameObject.Find("Manager - Game").GetComponent<GameManager>();
+    void Awake()
+    {
+        manager = GameObject.Find("Manager - Game").GetComponent<GameManager>();
+        nameTag = GetComponentInChildren<TextMesh>();
+    }
 
-    void Start()
+    public override void OnStartLocalPlayer()
     {
         scene = SceneManager.GetActiveScene();
-
-        if (!isLocalPlayer) return;
 
         HideLockCursor();
         SpawnCamera();
         PopulatePositions();
+
+
+        string name = "Player" + Random.Range(100, 999);
+        Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+        CmdSetupPlayer(name, color);
     }
 
     void Update()
@@ -50,6 +64,27 @@ public class PlayerMovement : NetworkBehaviour
         if (scene.name == "Race") AutomaticMovement();
         if (!hasTeleported) Teleport();
         TeleportCooldown();
+    }
+
+    void OnNameChanged(string _Old, string _New)
+    {
+        nameTag.text = playerName;
+    }
+
+    void OnColorChanged(Color _Old, Color _New)
+    {
+        nameTag.color = _New;
+        playerMaterialClone = new Material(GetComponent<Renderer>().material);
+        playerMaterialClone.color = _New;
+        GetComponent<Renderer>().material = playerMaterialClone;
+    }
+
+    [Command]
+    public void CmdSetupPlayer(string _name, Color _col)
+    {
+        // player info sent to server, then server updates sync vars which handles it on all clients
+        playerName = _name;
+        playerColor = _col;
     }
 
     // players are always moving upwards if they are touching a 'climbable' layer
@@ -96,12 +131,12 @@ public class PlayerMovement : NetworkBehaviour
             {
                 hasTeleported = false;
                 teleportTimer = 0;
-                playerMaterial.color = charged;
+                //playerMaterial.color = charged;
             }
             else
             {
                 teleportTimer += Time.deltaTime;
-                playerMaterial.color = recharging;
+                //playerMaterial.color = recharging;
             }
         }
     }
