@@ -22,13 +22,22 @@ public class GameManager : NetworkBehaviour
         // spawns a specific map depending on what map is selected
         if (scene.name != "Room")
         {
-            MeshRenderer temp = GameObject.Find("Quad - Sky").GetComponent<MeshRenderer>();
-            if (map == Map.Day) temp.material.mainTexture = dayTexture;
-            else if (map == Map.Night) temp.material.mainTexture = nightTexture;
+            CreateMap();
         }
     }
 
+    [Command]
+    void CreateMap()
+    {
+        MeshRenderer temp = GameObject.Find("Quad - Sky").GetComponent<MeshRenderer>();
+        if (map == Map.Day) temp.material.mainTexture = dayTexture;
+        else if (map == Map.Night) temp.material.mainTexture = nightTexture;
+    }
+
+    [Command]
     public void ChangeGameMode(int index) => mode = (Mode)index;
+
+    [Command]
     public void ChangeMap(int index) => map = (Map)index;
 
     // changes the scene for all clients
