@@ -80,7 +80,6 @@ public class PlayerMovement : NetworkBehaviour
             if (hit.collider) transform.Translate(Vector3.up * speed * Time.deltaTime);
         }
     }
-
     // teleports the player to 1 of 4 different positions depending on which key they press (1, 2, 3, 4)
     void Teleport()
     {
@@ -105,7 +104,6 @@ public class PlayerMovement : NetworkBehaviour
             hasTeleported = true;
         }
     }
-
     // players can only teleport every few seconds
     void TeleportCooldown()
     {
@@ -131,7 +129,6 @@ public class PlayerMovement : NetworkBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-
     // gives the player their own camera
     void SpawnCamera()
     {
@@ -140,7 +137,6 @@ public class PlayerMovement : NetworkBehaviour
         cameraInstance.GetComponent<PlayerCamera>().target = this.transform;
         tempCamera = cameraInstance;
     }
-
     // adds the positions used to move to the list
     void PopulatePositions()
     {
