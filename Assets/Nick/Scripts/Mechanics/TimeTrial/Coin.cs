@@ -16,11 +16,16 @@ public class Coin : NetworkBehaviour
 
 	private void OnEnable()
 	{
-		thisCoin = GetComponent<GameObject>();
+		//thisCoin = GetComponent<GameObject>().gameObject;
 		myScore = myScore;
 	}
 
-	void Update() => Move();
+	void FixedUpdate()
+	{
+		Move();
+		//thisCoin = GetComponent<GameObject>().gameObject;
+	}
+	
 
 	void Move() => transform.Translate(-Vector3.forward * coinSpeed * Time.deltaTime);
 
@@ -29,24 +34,13 @@ public class Coin : NetworkBehaviour
 	{    
 		if(other.collider.CompareTag("Player"))
 		{
-			//ok so like this works but AddScore doesnt wtf
-			AddScore();
-			NetworkServer.Destroy(thisCoin);
+			
+			other.collider.GetComponent<ScoreSystem>().playerScore += 1;
+			
+			//NetworkServer.Destroy(thisCoin);
 			Debug.Log("player hit coin");
 			
 		}
 	}
-	/// <summary>
-	/// Adds +1 to player score
-	/// </summary>
-	void AddScore()
-	{
-		//THIS IS NOT WORKING AND I HAVE NO IDEA WHY
-		//I TRIED EVERYTHING AND I STILL GET
-		//STUPID NULLREFERENCEEXEPTION ERRORS EVERY TIME
-		// /////////////////////////
-		// myScore.playerScore += 1;
-		// ////////////////////////
-		Debug.Log("Score added");
-	}
+	
 }

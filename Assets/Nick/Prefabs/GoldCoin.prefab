@@ -974,7 +974,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  thisCoin: {fileID: 8791356599631223679}
+  thisCoin: {fileID: 0}
   coinSpeed: 5
 --- !u!54 &896182377808699452
 Rigidbody:

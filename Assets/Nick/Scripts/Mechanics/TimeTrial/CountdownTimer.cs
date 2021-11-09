@@ -17,6 +17,7 @@ public class CountdownTimer : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        
 
         if(isClient)
         {
@@ -31,11 +32,12 @@ public class CountdownTimer : NetworkBehaviour
         float duration = 3f; // 3 seconds you can change this 
         //to whatever you want
         float normalizedTime = 0;
+        
         while(normalizedTime <= 1f)
         {
             //countdownImage.fillAmount = normalizedTime;
             normalizedTime += Time.deltaTime / duration;
-            yield return null;
+            yield return new WaitForSeconds(60f);
         }
         // Timer code here
         

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ScoreSystem : NetworkBehaviour
 {
-    [SyncVar] [SerializeField] public int playerScore = 1;
+    [SyncVar] [SerializeField] public int playerScore = 0;
 
     [SerializeField] private Text scoreText;
     
@@ -23,5 +23,13 @@ public class ScoreSystem : NetworkBehaviour
     void FixedUpdate()
     {
         scoreText.text = playerScore.ToString();
+    }
+    
+    void OnCollisionEnter(Collision other)
+    {    
+        if(other.collider.CompareTag("Coin"))
+        {
+            NetworkServer.Destroy(other.gameObject);
+        }
     }
 }
