@@ -1854,6 +1854,7 @@ MonoBehaviour:
   playerSpawnMethod: 1
   spawnPrefabs:
   - {fileID: 3090840035635485865, guid: 6924747c9cea42148b6cdd7058f9aa33, type: 3}
+  - {fileID: 8791356599631223679, guid: 9109b1f33d9ecea409562efe7ee3b306, type: 3}
   showRoomGUI: 1
   minPlayers: 1
   roomPlayerPrefab: {fileID: 8661360273150935849, guid: deae2134a1d77704b9c595efe69767dd, type: 3}
@@ -1865,7 +1866,7 @@ MonoBehaviour:
   manager: {fileID: 0}
   raceScene: Assets/Nick/Scenes/Race.unity
   survivalScene: Assets/Nick/Scenes/Survival.unity
-  thirdScene: Assets/Nick/Scenes/Gamemode3.unity
+  timeTrialScene: Assets/Nick/Scenes/TimeTrial.unity
 --- !u!114 &954170705
 MonoBehaviour:
   m_ObjectHideFlags: 0

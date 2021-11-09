@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;  
 using UnityEngine;
+using UnityEngine.UI;
 using Mirror;
 using TMPro;
 
@@ -34,12 +35,21 @@ public class PlayerMovement : NetworkBehaviour
     [Header("Camera")]
     [SerializeField] GameObject playerCameraPrefab;
     public GameObject tempCamera;
+    
+    
+    
     #endregion
 
     void Awake()
     {
         manager = GameObject.Find("Manager - Game").GetComponent<GameManager>();
         nameTag = GetComponentInChildren<TextMesh>();
+        if(isLocalPlayer)
+        {
+         
+            GetComponentInChildren<Canvas>().gameObject.SetActive(true);
+            
+        }
     }
 
     public override void OnStartLocalPlayer()
@@ -164,4 +174,5 @@ public class PlayerMovement : NetworkBehaviour
         positions[2] = GameObject.Find("Position3").transform;
         positions[3] = GameObject.Find("Position4").transform;
     }
+    
 }

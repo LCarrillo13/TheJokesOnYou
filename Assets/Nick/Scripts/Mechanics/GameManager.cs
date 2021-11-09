@@ -5,7 +5,7 @@ using TMPro;
 
 public class GameManager : NetworkBehaviour
 {
-    public enum Mode { Race, Survival, Mode3 }
+    public enum Mode { Race, Survival, TimeTrial }
     public enum Map { Day, Night }
 
     public static Mode mode;
