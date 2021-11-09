@@ -7,28 +7,22 @@ using Mirror;
 
 public class NetworkManagerLobby : NetworkManager
 {
-    [SerializeField] private int minPlayers = 2;
-    [Scene] [SerializeField] private string menuScene = string.Empty;
-
+    [SerializeField] int minPlayers = 2;
+    [SerializeField] string menuScene = string.Empty;
     [Header("Maps")]
-    [SerializeField] private int numberOfRounds = 1;
-    [SerializeField] private MapSet mapSet = null;
-
+    [SerializeField] int numberOfRounds = 1;
+    [SerializeField] MapSet mapSet = null;
     [Header("Room")]
-    [SerializeField] private NetworkRoomPlayerLobby roomPlayerPrefab = null;
-
+    [SerializeField] NetworkRoomPlayerLobby roomPlayerPrefab = null;
     [Header("Game")]
-    [SerializeField] private NetworkGamePlayerLobby gamePlayerPrefab = null;
-    [SerializeField] private GameObject playerSpawnSystem = null;
-    [SerializeField] private GameObject roundSystem = null;
-
-    private MapHandler mapHandler;
-
+    [SerializeField] NetworkGamePlayerLobby gamePlayerPrefab = null;
+    [SerializeField] GameObject playerSpawnSystem = null;
+    [SerializeField] GameObject roundSystem = null;
+    MapHandler mapHandler;
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
     public static event Action<NetworkConnection> OnServerReadied;
     public static event Action OnServerStopped;
-
     public List<NetworkRoomPlayerLobby> RoomPlayers { get; } = new List<NetworkRoomPlayerLobby>();
     public List<NetworkGamePlayerLobby> GamePlayers { get; } = new List<NetworkGamePlayerLobby>();
 
@@ -40,7 +34,7 @@ public class NetworkManagerLobby : NetworkManager
 
         foreach (var prefab in spawnablePrefabs)
         {
-            ClientScene.RegisterPrefab(prefab);
+            NetworkClient.RegisterPrefab(prefab);
         }
     }
 
@@ -117,7 +111,7 @@ public class NetworkManagerLobby : NetworkManager
         }
     }
 
-    private bool IsReadyToStart()
+    bool IsReadyToStart()
     {
         if (numPlayers < minPlayers) { return false; }
 
@@ -133,7 +127,7 @@ public class NetworkManagerLobby : NetworkManager
     {
         if (SceneManager.GetActiveScene().name == menuScene)
         {
-            if (!IsReadyToStart()) { return; }
+            if (!IsReadyToStart()) return;
 
             mapHandler = new MapHandler(mapSet, numberOfRounds);
 
@@ -157,7 +151,6 @@ public class NetworkManagerLobby : NetworkManager
                 NetworkServer.ReplacePlayerForConnection(conn, gameplayerInstance.gameObject);
             }
         }
-
         base.ServerChangeScene(newSceneName);
     }
 

@@ -5,18 +5,17 @@ using Mirror;
 
 public class NetworkRoomPlayerLobby : NetworkBehaviour
 {
-    [Header("UI")]
-    [SerializeField] private GameObject lobbyUI = null;
-    [SerializeField] private TMP_Text[] playerNameTexts = new TMP_Text[4];
-    [SerializeField] private TMP_Text[] playerReadyTexts = new TMP_Text[4];
-    [SerializeField] private Button startGameButton = null;
+    [SerializeField] GameObject lobbyUI = null;
+    [SerializeField] TMP_Text[] playerNameTexts = new TMP_Text[4];
+    [SerializeField] TMP_Text[] playerReadyTexts = new TMP_Text[4];
+    [SerializeField] Button startGameButton = null;
 
     [SyncVar(hook = nameof(HandleDisplayNameChanged))]
     public string DisplayName = "Loading...";
     [SyncVar(hook = nameof(HandleReadyStatusChanged))]
     public bool IsReady = false;
 
-    private bool isLeader;
+    bool isLeader;
     public bool IsLeader
     {
         set
@@ -26,8 +25,8 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
         }
     }
 
-    private NetworkManagerLobby room;
-    private NetworkManagerLobby Room
+    NetworkManagerLobby room;
+    NetworkManagerLobby Room
     {
         get
         {
@@ -60,7 +59,7 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
     public void HandleReadyStatusChanged(bool oldValue, bool newValue) => UpdateDisplay();
     public void HandleDisplayNameChanged(string oldValue, string newValue) => UpdateDisplay();
 
-    private void UpdateDisplay()
+    void UpdateDisplay()
     {
         if (!hasAuthority)
         {
@@ -72,7 +71,6 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
                     break;
                 }
             }
-
             return;
         }
 
@@ -85,38 +83,30 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
         for (int i = 0; i < Room.RoomPlayers.Count; i++)
         {
             playerNameTexts[i].text = Room.RoomPlayers[i].DisplayName;
-            playerReadyTexts[i].text = Room.RoomPlayers[i].IsReady ?
-                "<color=green>Ready</color>" :
-                "<color=red>Not Ready</color>";
+            playerReadyTexts[i].text = Room.RoomPlayers[i].IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>";
         }
     }
 
     public void HandleReadyToStart(bool readyToStart)
     {
-        if (!isLeader) { return; }
-
+        if (!isLeader) return;
         startGameButton.interactable = readyToStart;
     }
 
     [Command]
-    private void CmdSetDisplayName(string displayName)
-    {
-        DisplayName = displayName;
-    }
+    void CmdSetDisplayName(string displayName) => DisplayName = displayName;
 
     [Command]
     public void CmdReadyUp()
     {
         IsReady = !IsReady;
-
         Room.NotifyPlayersOfReadyState();
     }
 
     [Command]
     public void CmdStartGame()
     {
-        if (Room.RoomPlayers[0].connectionToClient != connectionToClient) { return; }
-
+        if (Room.RoomPlayers[0].connectionToClient != connectionToClient) return; 
         Room.StartGame();
     }
 }

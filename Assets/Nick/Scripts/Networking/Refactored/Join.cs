@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Join : MonoBehaviour
 {
     [SerializeField] NetworkManagerLobby networkManager = null;
-    [SerializeField] GameObject landingPagePanel = null;
+    [SerializeField] GameObject lobbyPanel = null;
     [SerializeField] TMP_InputField ipAddressInputField = null;
     [SerializeField] Button joinButton = null;
 
@@ -34,7 +34,7 @@ public class Join : MonoBehaviour
     {
         joinButton.interactable = true;
         gameObject.SetActive(false);
-        landingPagePanel.SetActive(false);
+        lobbyPanel.SetActive(false);
     }
 
     void HandleClientDisconnected() => joinButton.interactable = true;

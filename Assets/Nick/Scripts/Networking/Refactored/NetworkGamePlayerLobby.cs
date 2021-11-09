@@ -2,15 +2,14 @@ using Mirror;
 
 public class NetworkGamePlayerLobby : NetworkBehaviour
 {
-    [SyncVar]
-    string displayName = "Loading...";
+    [SyncVar] string displayName = "Loading...";
 
     NetworkManagerLobby room;
     NetworkManagerLobby Room
     {
         get
         {
-            if (room != null) { return room; }
+            if (room != null) return room;
             return room = NetworkManager.singleton as NetworkManagerLobby;
         }
     }

@@ -3,11 +3,12 @@ using UnityEngine;
 public class Host : MonoBehaviour
 {
     [SerializeField] NetworkManagerLobby networkManager = null;
-    [SerializeField] GameObject landingPagePanel = null;
+    [SerializeField] GameObject lobbyPanel = null;
 
     public void HostLobby()
     {
         networkManager.StartHost();
-        landingPagePanel.SetActive(false);
+        lobbyPanel.SetActive(false);
     }
 }
+
