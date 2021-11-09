@@ -89,6 +89,7 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
 
     public void HandleReadyToStart(bool readyToStart)
     {
+        // only host can press start button
         if (!isLeader) return;
         startGameButton.interactable = readyToStart;
     }

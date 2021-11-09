@@ -3,11 +3,10 @@ using System.Linq;
 
 public class MapHandler
 {
-    private readonly IReadOnlyCollection<string> maps;
-    private readonly int numberOfRounds;
-
-    private int currentRound;
-    private List<string> remainingMaps;
+    readonly IReadOnlyCollection<string> maps;
+    readonly int numberOfRounds;
+    int currentRound;
+    List<string> remainingMaps;
 
     public MapHandler(MapSet mapSet, int numberOfRounds)
     {
@@ -23,11 +22,11 @@ public class MapHandler
     {
         get
         {
-            if (IsComplete) { return null; }
+            if (IsComplete) return null;
 
             currentRound++;
 
-            if (remainingMaps.Count == 0) { ResetMaps(); }
+            if (remainingMaps.Count == 0) ResetMaps();
 
             string map = remainingMaps[UnityEngine.Random.Range(0, remainingMaps.Count)];
 
@@ -37,5 +36,5 @@ public class MapHandler
         }
     }
 
-    private void ResetMaps() => remainingMaps = maps.ToList();
+    void ResetMaps() => remainingMaps = maps.ToList();
 }
