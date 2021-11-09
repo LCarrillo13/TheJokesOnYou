@@ -41,14 +41,12 @@ public class NetworkManagerLobby : NetworkManager
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
-
         OnClientConnected?.Invoke();
     }
 
     public override void OnClientDisconnect(NetworkConnection conn)
     {
         base.OnClientDisconnect(conn);
-
         OnClientDisconnected?.Invoke();
     }
 
@@ -111,6 +109,7 @@ public class NetworkManagerLobby : NetworkManager
         }
     }
 
+    // returns true if all players have pressed 'Ready' button
     bool IsReadyToStart()
     {
         if (numPlayers < minPlayers) return false;
@@ -136,7 +135,8 @@ public class NetworkManagerLobby : NetworkManager
 
     public override void ServerChangeScene(string newSceneName)
     {
-        // From menu to game
+        // from menu to game
+        // '.StartsWith' - determines whether the beginning of this string instance matches the specified string.
         if (SceneManager.GetActiveScene().name == menuScene && newSceneName.StartsWith("Scene_Map"))
         {
             for (int i = RoomPlayers.Count - 1; i >= 0; i--)

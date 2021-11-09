@@ -6,15 +6,12 @@ using Mirror;
 public class PlayerSpawnSystem : NetworkBehaviour
 {
     [SerializeField] GameObject playerPrefab = null;
-
     static List<Transform> spawnPoints = new List<Transform>();
-
     int nextIndex = 0;
 
     public static void AddSpawnPoint(Transform transform)
     {
         spawnPoints.Add(transform);
-
         spawnPoints = spawnPoints.OrderBy(x => x.GetSiblingIndex()).ToList();
     }
 
