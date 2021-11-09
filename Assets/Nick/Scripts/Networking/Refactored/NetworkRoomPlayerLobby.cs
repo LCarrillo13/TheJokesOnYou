@@ -35,7 +35,6 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
     public override void OnStartAuthority()
     {
         CmdSetDisplayName(PlayerNameInput.DisplayName);
-
         lobbyUI.SetActive(true);
     }
 

@@ -2278,8 +2278,13 @@ MonoBehaviour:
   spawnPrefabs: []
   minPlayers: 1
   menuScene: Menu
+  map_Race: map_Race
+  map_Survival: map_Survival
+  map_TimeTrial: map_TimeTrial
   numberOfRounds: 1
   mapSet: {fileID: 0}
+  map1: {fileID: 290517648721628279, guid: 4370f45b6eb652242b5d7cb2f1dd9999, type: 3}
+  map2: {fileID: 5913679325641120952, guid: ba6a2219705cbe94a86c7d76ec690f6c, type: 3}
   roomPlayerPrefab: {fileID: 3208392423336049120, guid: 5e9b79a6a8a12e34dbb952f125db9242, type: 3}
   gamePlayerPrefab: {fileID: 5819709733793006376, guid: 35e4be9de699658429f36c2477bda0b4, type: 3}
   playerSpawnSystem: {fileID: 3817863220281627108, guid: d05f56d34525b6447a3428fb7de1be60, type: 3}

@@ -7,13 +7,9 @@ using TMPro;
 public class PlayerMovement : NetworkBehaviour
 {
     #region Variables
-    [Header("Scripts")]
-    GameManager manager;
     [Header("Attributes")]
     [SerializeField] float speed;
     public TextMesh nameTag;
-    [SyncVar(hook = nameof(OnNameChanged))] 
-    public string playerName;
     [SyncVar(hook = nameof(OnColorChanged))] 
     public Color playerColor = Color.white;
     Material playerMaterialClone;
@@ -36,13 +32,9 @@ public class PlayerMovement : NetworkBehaviour
     public GameObject tempCamera;
     #endregion
 
-    void Awake()
-    {
-        manager = GameObject.Find("Manager - Game").GetComponent<GameManager>();
-        nameTag = GetComponentInChildren<TextMesh>();
-    }
+    void Awake() => nameTag = GetComponentInChildren<TextMesh>();
 
-    public override void OnStartLocalPlayer()
+    void Start()
     {
         scene = SceneManager.GetActiveScene();
 
@@ -50,26 +42,18 @@ public class PlayerMovement : NetworkBehaviour
         SpawnCamera();
         PopulatePositions();
 
-
-        string name = "Player" + Random.Range(100, 999);
         Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-        CmdSetupPlayer(name, color);
+        CmdSetupPlayer(PlayerNameInput.DisplayName, color);
     }
 
     void Update()
     {
-        // makes sure each client controls their own player
-        if (!isLocalPlayer) return;
-
-        if (scene.name == "Race") AutomaticMovement();
+        if (scene.name == "map_Race") AutomaticMovement();
         if (!hasTeleported) Teleport();
         TeleportCooldown();
     }
 
-    void OnNameChanged(string _Old, string _New)
-    {
-        nameTag.text = playerName;
-    }
+    void OnNameChanged(string _Old, string _New) => nameTag.text = PlayerNameInput.DisplayName;
 
     void OnColorChanged(Color _Old, Color _New)
     {
@@ -83,7 +67,7 @@ public class PlayerMovement : NetworkBehaviour
     public void CmdSetupPlayer(string _name, Color _col)
     {
         // player info sent to server, then server updates sync vars which handles it on all clients
-        playerName = _name;
+        nameTag.text = _name;
         playerColor = _col;
     }
 
@@ -151,9 +135,10 @@ public class PlayerMovement : NetworkBehaviour
     // gives the player their own camera
     void SpawnCamera()
     {
-        GameObject a = Instantiate(playerCameraPrefab);
-        a.GetComponent<PlayerCamera>().target = this.transform;
-        tempCamera = a;
+        GameObject cameraInstance = Instantiate(playerCameraPrefab);
+        NetworkServer.Spawn(cameraInstance);
+        cameraInstance.GetComponent<PlayerCamera>().target = this.transform;
+        tempCamera = cameraInstance;
     }
 
     // adds the positions used to move to the list

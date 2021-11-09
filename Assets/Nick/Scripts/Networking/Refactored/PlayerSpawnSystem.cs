@@ -23,6 +23,8 @@ public class PlayerSpawnSystem : NetworkBehaviour
     {
         //InputManager.Add(ActionMapNames.Player);
         //InputManager.Controls.Player.Look.Enable();
+
+
     }
 
     [ServerCallback]

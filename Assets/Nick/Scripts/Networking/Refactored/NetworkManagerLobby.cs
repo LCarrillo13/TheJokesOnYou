@@ -9,16 +9,18 @@ public class NetworkManagerLobby : NetworkManager
 {
     [SerializeField] int minPlayers = 2;
     [SerializeField] string menuScene = string.Empty;
+    [SerializeField] string map_Race = string.Empty, map_Survival = string.Empty, map_TimeTrial = string.Empty;
     [Header("Maps")]
-    [SerializeField] int numberOfRounds = 1;
-    [SerializeField] MapSet mapSet = null;
+    //[SerializeField] int numberOfRounds = 1;
+    //[SerializeField] MapSet mapSet = null;
+    [SerializeField] GameObject map1, map2;
     [Header("Room")]
     [SerializeField] NetworkRoomPlayerLobby roomPlayerPrefab = null;
     [Header("Game")]
     [SerializeField] NetworkGamePlayerLobby gamePlayerPrefab = null;
     [SerializeField] GameObject playerSpawnSystem = null;
-    [SerializeField] GameObject roundSystem = null;
-    MapHandler mapHandler;
+    //[SerializeField] GameObject roundSystem = null;
+    //MapHandler mapHandler;
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
     public static event Action<NetworkConnection> OnServerReadied;
@@ -127,9 +129,28 @@ public class NetworkManagerLobby : NetworkManager
         {
             if (!IsReadyToStart()) return;
 
-            mapHandler = new MapHandler(mapSet, numberOfRounds);
+            //mapHandler = new MapHandler(mapSet, numberOfRounds);
+            //ServerChangeScene(mapHandler.NextMap);
 
-            ServerChangeScene(mapHandler.NextMap);
+            UpdateMode();
+        }
+    }
+
+    void UpdateMode()
+    {
+        switch (GameManager.mode)
+        {
+            case GameManager.Mode.Race:
+                ServerChangeScene(map_Race);
+                break;
+            case GameManager.Mode.Survival:
+                ServerChangeScene(map_Survival);
+                break;
+            case GameManager.Mode.TimeTrial:
+                ServerChangeScene(map_TimeTrial);
+                break;
+            default:
+                break;
         }
     }
 
@@ -155,13 +176,32 @@ public class NetworkManagerLobby : NetworkManager
 
     public override void OnServerSceneChanged(string sceneName)
     {
-        if (sceneName.StartsWith("Scene_Map"))
+        if (sceneName.StartsWith("map"))
         {
             GameObject playerSpawnSystemInstance = Instantiate(playerSpawnSystem);
             NetworkServer.Spawn(playerSpawnSystemInstance);
 
-            GameObject roundSystemInstance = Instantiate(roundSystem);
-            NetworkServer.Spawn(roundSystemInstance);
+            //GameObject roundSystemInstance = Instantiate(roundSystem);
+            //NetworkServer.Spawn(roundSystemInstance);
+
+            UpdateMap();
+        }
+    }
+
+    void UpdateMap()
+    {
+        switch (GameManager.map)
+        {
+            case GameManager.Map.Day:
+                GameObject map1Instance = Instantiate(map1);
+                NetworkServer.Spawn(map1Instance);
+                break;
+            case GameManager.Map.Night:
+                GameObject map2Instance = Instantiate(map2);
+                NetworkServer.Spawn(map2Instance);
+                break;
+            default:
+                break;
         }
     }
 
