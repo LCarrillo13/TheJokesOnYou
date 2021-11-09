@@ -35,7 +35,7 @@ public class PlayerSpawnSystem : NetworkBehaviour
 
         if (spawnPoint == null)
         {
-            Debug.LogError($"Missing spawn point for player {nextIndex}");
+            Debug.LogError($"You are missing a fricking spawn point for the fricking player {nextIndex}");
             return;
         }
 

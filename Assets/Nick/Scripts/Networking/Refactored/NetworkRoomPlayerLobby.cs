@@ -7,13 +7,10 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
 {
     [SerializeField] GameObject lobbyUI = null;
     [SerializeField] TMP_Text[] playerNameTexts = new TMP_Text[4];
-    [SerializeField] TMP_Text[] playerReadyTexts = new TMP_Text[4];
+    [SerializeField] TMP_Text[] playerReadyTexts = new TMP_Text[4]; // change ready texts to green / red circles
     [SerializeField] Button startGameButton = null;
-
-    [SyncVar(hook = nameof(HandleDisplayNameChanged))]
-    public string DisplayName = "Loading...";
-    [SyncVar(hook = nameof(HandleReadyStatusChanged))]
-    public bool IsReady = false;
+    [SyncVar(hook = nameof(HandleDisplayNameChanged))] public string DisplayName = "Loading...";
+    [SyncVar(hook = nameof(HandleReadyStatusChanged))] public bool IsReady = false;
 
     bool isLeader;
     public bool IsLeader
@@ -30,7 +27,7 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
     {
         get
         {
-            if (room != null) { return room; }
+            if (room != null) return room;
             return room = NetworkManager.singleton as NetworkManagerLobby;
         }
     }
@@ -45,14 +42,12 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
     public override void OnStartClient()
     {
         Room.RoomPlayers.Add(this);
-
         UpdateDisplay();
     }
 
     public override void OnStopClient()
     {
         Room.RoomPlayers.Remove(this);
-
         UpdateDisplay();
     }
 
@@ -76,14 +71,14 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
 
         for (int i = 0; i < playerNameTexts.Length; i++)
         {
-            playerNameTexts[i].text = "Waiting For Player...";
+            playerNameTexts[i].text = "Waiting for non-existent friends...";
             playerReadyTexts[i].text = string.Empty;
         }
 
         for (int i = 0; i < Room.RoomPlayers.Count; i++)
         {
             playerNameTexts[i].text = Room.RoomPlayers[i].DisplayName;
-            playerReadyTexts[i].text = Room.RoomPlayers[i].IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>";
+            playerReadyTexts[i].text = Room.RoomPlayers[i].IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>"; // change that here
         }
     }
 
