@@ -20,6 +20,8 @@ public class NetworkManagerLobby : NetworkManager
     [Header("Game")]
     [SerializeField] NetworkGamePlayerLobby gamePlayerPrefab = null;
     [SerializeField] GameObject playerSpawnSystem = null;
+    [Header("Menu")]
+    GameObject mainMenuPanel;
     //[SerializeField] GameObject roundSystem = null;
     //MapHandler mapHandler;
     public static event Action OnClientConnected;
@@ -75,11 +77,8 @@ public class NetworkManagerLobby : NetworkManager
         if (SceneManager.GetActiveScene().name == menuScene)
         {
             bool isLeader = RoomPlayers.Count == 0;
-
             NetworkRoomPlayerLobby roomPlayerInstance = Instantiate(roomPlayerPrefab);
-
             roomPlayerInstance.IsLeader = isLeader;
-
             NetworkServer.AddPlayerForConnection(conn, roomPlayerInstance.gameObject);
         }
     }
@@ -192,17 +191,30 @@ public class NetworkManagerLobby : NetworkManager
 
         if (sceneName == "Menu" || sceneName == "Results") ShowCursor();
 
+        // if returning from game scene to menu and server is still active
         // this replaces the gameplayers with room players so you can return to lobby from a game scene and start again
         if (sceneName == "Menu" && isNetworkActive)
         {
-            for (int i = GamePlayers.Count - 1; i >= 0; i--)
-            {
-                var conn = GamePlayers[i].connectionToClient;
-                var roomPlayerInstance = Instantiate(roomPlayerPrefab);
-                NetworkServer.Destroy(conn.identity.gameObject);
-                NetworkServer.ReplacePlayerForConnection(conn, roomPlayerInstance.gameObject);
-            }
+            ReplaceConnections();
+            UpdateUI();
         }
+    }
+
+    void ReplaceConnections()
+    {
+        for (int i = GamePlayers.Count - 1; i >= 0; i--)
+        {
+            var conn = GamePlayers[i].connectionToClient;
+            var roomPlayerInstance = Instantiate(roomPlayerPrefab);
+            NetworkServer.Destroy(conn.identity.gameObject);
+            NetworkServer.ReplacePlayerForConnection(conn, roomPlayerInstance.gameObject);
+        }
+    }
+
+    void UpdateUI()
+    {
+        mainMenuPanel = GameObject.Find("Panel - Main Menu");
+        mainMenuPanel.SetActive(false);
     }
 
     void ShowCursor()

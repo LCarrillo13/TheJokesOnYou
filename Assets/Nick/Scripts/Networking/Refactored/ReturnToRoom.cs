@@ -1,6 +1,7 @@
 using UnityEngine;
+using Mirror;
 
-public class ReturnToRoom : MonoBehaviour
+public class ReturnToRoom : NetworkBehaviour
 {
     NetworkManagerLobby networkManager;
 
@@ -8,6 +9,7 @@ public class ReturnToRoom : MonoBehaviour
 
     public void Return()
     {
+        if (!isServer) return;
         networkManager.ServerChangeScene("Menu");      
     }
 }
