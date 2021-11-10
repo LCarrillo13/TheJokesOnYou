@@ -7,6 +7,7 @@ using Mirror;
 
 public class NetworkManagerLobby : NetworkManager
 {
+    #region Variables
     [SerializeField] int minPlayers = 2;
     [SerializeField] string menuScene = string.Empty;
     [SerializeField] string map_Race = string.Empty, map_Survival = string.Empty, map_TimeTrial = string.Empty;
@@ -27,6 +28,7 @@ public class NetworkManagerLobby : NetworkManager
     public static event Action OnServerStopped;
     public List<NetworkRoomPlayerLobby> RoomPlayers { get; } = new List<NetworkRoomPlayerLobby>();
     public List<NetworkGamePlayerLobby> GamePlayers { get; } = new List<NetworkGamePlayerLobby>();
+    #endregion
 
     public override void OnStartServer() => spawnPrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs").ToList();
 
@@ -67,6 +69,7 @@ public class NetworkManagerLobby : NetworkManager
         }
     }
 
+    // the reason why returning to the menu and pressing 'Host' doesn't work is because players have already been added, so the roomPlayerPrefab isn't spawned :/ hmmm umm uhh
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         if (SceneManager.GetActiveScene().name == menuScene)
@@ -158,7 +161,7 @@ public class NetworkManagerLobby : NetworkManager
     {
         // from menu to game
         // '.StartsWith' - determines whether the beginning of this string instance matches the specified string.
-        if (SceneManager.GetActiveScene().name == menuScene && newSceneName.StartsWith("Scene_Map"))
+        if (SceneManager.GetActiveScene().name == menuScene && newSceneName.StartsWith("map"))
         {
             for (int i = RoomPlayers.Count - 1; i >= 0; i--)
             {
@@ -186,6 +189,26 @@ public class NetworkManagerLobby : NetworkManager
 
             UpdateMap();
         }
+
+        if (sceneName == "Menu" || sceneName == "Results") ShowCursor();
+
+        // this replaces the gameplayers with room players so you can return to lobby from a game scene and start again
+        if (sceneName == "Menu" && isNetworkActive)
+        {
+            for (int i = GamePlayers.Count - 1; i >= 0; i--)
+            {
+                var conn = GamePlayers[i].connectionToClient;
+                var roomPlayerInstance = Instantiate(roomPlayerPrefab);
+                NetworkServer.Destroy(conn.identity.gameObject);
+                NetworkServer.ReplacePlayerForConnection(conn, roomPlayerInstance.gameObject);
+            }
+        }
+    }
+
+    void ShowCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     void UpdateMap()

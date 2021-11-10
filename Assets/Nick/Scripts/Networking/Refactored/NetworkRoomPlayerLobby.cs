@@ -7,7 +7,7 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
 {
     [SerializeField] GameObject lobbyUI = null;
     [SerializeField] TMP_Text[] playerNameTexts = new TMP_Text[4];
-    [SerializeField] TMP_Text[] playerReadyTexts = new TMP_Text[4]; // change ready texts to green / red circles
+    [SerializeField] Image[] playerReadyImages = new Image[4];
     [SerializeField] Button startGameButton = null;
     [SyncVar(hook = nameof(HandleDisplayNameChanged))] public string DisplayName = "Loading...";
     [SyncVar(hook = nameof(HandleReadyStatusChanged))] public bool IsReady = false;
@@ -71,13 +71,12 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
         for (int i = 0; i < playerNameTexts.Length; i++)
         {
             playerNameTexts[i].text = "Waiting for non-existent friends...";
-            playerReadyTexts[i].text = string.Empty;
         }
 
         for (int i = 0; i < Room.RoomPlayers.Count; i++)
         {
             playerNameTexts[i].text = Room.RoomPlayers[i].DisplayName;
-            playerReadyTexts[i].text = Room.RoomPlayers[i].IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>"; // change that here
+            playerReadyImages[i].color = Room.RoomPlayers[i].IsReady ? Color.green : Color.red; 
         }
     }
 

@@ -280,7 +280,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  teleportDelay: 2
+  teleportDelay: 0.5
   raycastOffset: {x: 0, y: 0.5, z: 0}
   climbableLayer:
     serializedVersion: 2
