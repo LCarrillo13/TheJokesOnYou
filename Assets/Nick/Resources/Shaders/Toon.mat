@@ -28,5 +28,5 @@ Material:
     - _Detail: 0.3
     - _Strength: 0.5
     m_Colors:
-    - _Color: {r: 0.22899605, g: 0.5849056, b: 0.3830715, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
