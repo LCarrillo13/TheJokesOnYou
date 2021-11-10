@@ -8,13 +8,9 @@ using TMPro;
 public class PlayerMovement : NetworkBehaviour
 {
     #region Variables
-    [Header("Scripts")]
-    GameManager manager;
     [Header("Attributes")]
     [SerializeField] float speed;
     public TextMesh nameTag;
-    [SyncVar(hook = nameof(OnNameChanged))] 
-    public string playerName;
     [SyncVar(hook = nameof(OnColorChanged))] 
     public Color playerColor = Color.white;
     Material playerMaterialClone;
@@ -40,6 +36,7 @@ public class PlayerMovement : NetworkBehaviour
     
     #endregion
 
+<<<<<<< HEAD
     void Awake()
     {
         manager = GameObject.Find("Manager - Game").GetComponent<GameManager>();
@@ -51,8 +48,11 @@ public class PlayerMovement : NetworkBehaviour
             
         }
     }
+=======
+    void Awake() => nameTag = GetComponentInChildren<TextMesh>();
+>>>>>>> origin/nick
 
-    public override void OnStartLocalPlayer()
+    void Start()
     {
         scene = SceneManager.GetActiveScene();
 
@@ -60,26 +60,18 @@ public class PlayerMovement : NetworkBehaviour
         SpawnCamera();
         PopulatePositions();
 
-
-        string name = "Player" + Random.Range(100, 999);
         Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-        CmdSetupPlayer(name, color);
+        CmdSetupPlayer(PlayerNameInput.DisplayName, color);
     }
 
     void Update()
     {
-        // makes sure each client controls their own player
-        if (!isLocalPlayer) return;
-
-        if (scene.name == "Race") AutomaticMovement();
+        if (scene.name == "map_Race") AutomaticMovement();
         if (!hasTeleported) Teleport();
         TeleportCooldown();
     }
 
-    void OnNameChanged(string _Old, string _New)
-    {
-        nameTag.text = playerName;
-    }
+    void OnNameChanged(string _Old, string _New) => nameTag.text = PlayerNameInput.DisplayName;
 
     void OnColorChanged(Color _Old, Color _New)
     {
@@ -93,7 +85,7 @@ public class PlayerMovement : NetworkBehaviour
     public void CmdSetupPlayer(string _name, Color _col)
     {
         // player info sent to server, then server updates sync vars which handles it on all clients
-        playerName = _name;
+        nameTag.text = _name;
         playerColor = _col;
     }
 
@@ -106,7 +98,6 @@ public class PlayerMovement : NetworkBehaviour
             if (hit.collider) transform.Translate(Vector3.up * speed * Time.deltaTime);
         }
     }
-
     // teleports the player to 1 of 4 different positions depending on which key they press (1, 2, 3, 4)
     void Teleport()
     {
@@ -131,7 +122,6 @@ public class PlayerMovement : NetworkBehaviour
             hasTeleported = true;
         }
     }
-
     // players can only teleport every few seconds
     void TeleportCooldown()
     {
@@ -157,15 +147,14 @@ public class PlayerMovement : NetworkBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-
     // gives the player their own camera
     void SpawnCamera()
     {
-        GameObject a = Instantiate(playerCameraPrefab);
-        a.GetComponent<PlayerCamera>().target = this.transform;
-        tempCamera = a;
+        GameObject cameraInstance = Instantiate(playerCameraPrefab);
+        NetworkServer.Spawn(cameraInstance);
+        cameraInstance.GetComponent<PlayerCamera>().target = this.transform;
+        tempCamera = cameraInstance;
     }
-
     // adds the positions used to move to the list
     void PopulatePositions()
     {

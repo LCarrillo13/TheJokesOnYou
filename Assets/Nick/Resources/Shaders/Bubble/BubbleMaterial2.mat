@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Toon
-  m_Shader: {fileID: 4800000, guid: 443f913fc426fd448a2c842c397c317e, type: 3}
+  m_Name: BubbleMaterial2
+  m_Shader: {fileID: 4800000, guid: cfa6ab54d5248c74c95281a810a05b97, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -18,15 +18,10 @@ Material:
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+    m_TexEnvs: []
     m_Floats:
-    - _Brightness: 0.3
-    - _Detail: 0.3
-    - _Strength: 0.5
+    - _IntersectionPower: 0.186
+    - _RimPower: 0.281
     m_Colors:
-    - _Color: {r: 0.22899605, g: 0.5849056, b: 0.3830715, a: 1}
+    - _MainColor: {r: 0.4475792, g: 0.8867924, b: 0.506141, a: 1}
   m_BuildTextureStacks: []

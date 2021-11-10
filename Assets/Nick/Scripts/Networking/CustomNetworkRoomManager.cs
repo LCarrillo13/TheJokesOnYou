@@ -95,6 +95,7 @@ public class CustomNetworkRoomManager : NetworkRoomManager
     // The default implementation of this function uses ServerChangeScene() to switch to the game player scene. By implementing this callback you can customize what happens when all the players in the room are ready, such as adding a countdown or a confirmation for a group leader.
     public override void OnRoomServerPlayersReady()
     {
+<<<<<<< HEAD
         switch (GameManager.mode)
         {
             case GameManager.Mode.Race:
@@ -109,6 +110,9 @@ public class CustomNetworkRoomManager : NetworkRoomManager
             default:
                 break;
         }
+=======
+        
+>>>>>>> origin/nick
     }
 
     // This is called on the server when CheckReadyToBegin finds that players are not ready

@@ -6,6 +6,6 @@ public class WinCheck : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("Player")) manager.EndGame();
+        //if (collision.collider.CompareTag("Player")) manager.EndGame();
     }
 }
