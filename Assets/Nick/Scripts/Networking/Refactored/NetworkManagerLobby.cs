@@ -71,7 +71,6 @@ public class NetworkManagerLobby : NetworkManager
         }
     }
 
-    // the reason why returning to the menu and pressing 'Host' doesn't work is because players have already been added, so the roomPlayerPrefab isn't spawned :/ hmmm umm uhh
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         if (SceneManager.GetActiveScene().name == menuScene)
