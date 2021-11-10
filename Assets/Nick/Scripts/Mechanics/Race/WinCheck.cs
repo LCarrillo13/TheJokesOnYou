@@ -9,7 +9,5 @@ public class WinCheck : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Player")) networkManager.ServerChangeScene("Results");
-    }
-
-    
+    }    
 }

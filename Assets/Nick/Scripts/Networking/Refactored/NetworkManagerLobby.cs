@@ -21,7 +21,7 @@ public class NetworkManagerLobby : NetworkManager
     [SerializeField] NetworkGamePlayerLobby gamePlayerPrefab = null;
     [SerializeField] GameObject playerSpawnSystem = null;
     [Header("Menu")]
-    GameObject mainMenuPanel;
+    public GameObject mainMenuPanel;
     //[SerializeField] GameObject roundSystem = null;
     //MapHandler mapHandler;
     public static event Action OnClientConnected;

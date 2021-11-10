@@ -103,4 +103,19 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
         if (Room.RoomPlayers[0].connectionToClient != connectionToClient) return; 
         Room.StartGame();
     }
+
+    [Command]
+    public void CmdDisconnect()
+    {
+        if (isServer)
+        {
+            room.StopHost(); 
+        }
+        else
+        {
+            if (!isLocalPlayer) return;
+            room.OnClientDisconnect(connectionToClient);
+        }
+        room.mainMenuPanel.SetActive(true);
+    }
 }
