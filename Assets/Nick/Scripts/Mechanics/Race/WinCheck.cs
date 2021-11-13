@@ -1,10 +1,11 @@
 using UnityEngine;
+using Networking;
 
 public class WinCheck : MonoBehaviour
 {
-    NetworkManagerLobby networkManager;
+    CustomNetworkManager networkManager;
 
-    void Awake() => networkManager = GameObject.Find("NetworkManager").GetComponent<NetworkManagerLobby>();
+    void Awake() => networkManager = GameObject.Find("NetworkManager").GetComponent<CustomNetworkManager>();
 
     void OnCollisionEnter(Collision collision)
     {

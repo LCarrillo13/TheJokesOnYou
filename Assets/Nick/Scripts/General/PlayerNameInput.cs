@@ -6,10 +6,8 @@ public class PlayerNameInput : MonoBehaviour
 {
     [SerializeField] TMP_InputField nameInputField = null;
     [SerializeField] Button confirmButton = null;
-
     // 'static' used so we can access a player's name anywhere
     public static string DisplayName { get; private set; }
-
     // 'const' used to prevent modification of this string
     const string PlayerPrefsNameKey = "Noob";
 

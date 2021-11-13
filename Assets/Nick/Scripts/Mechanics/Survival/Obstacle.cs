@@ -14,7 +14,6 @@ public class Obstacle : NetworkBehaviour
     {    
         if(other.collider.CompareTag("Player"))
         {
-            NetworkServer.Destroy(other.gameObject.GetComponent<PlayerMovement>().tempCamera);
             NetworkServer.Destroy(other.gameObject);
         }
     }
