@@ -74,11 +74,19 @@ namespace Networking
 		}
 
         /// <summary> This is called when a host is stopped. </summary>
-        public override void OnStopHost() => IsHost = false;
+        public override void OnStopHost()
+        {
+            IsHost = false;
+        }
 
         public override void OnServerSceneChanged(string sceneName)
         {		
             base.OnServerSceneChanged(sceneName);
+        }
+
+        private void Update()
+        {
+			
         }
     }
 }

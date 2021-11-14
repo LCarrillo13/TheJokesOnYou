@@ -349,4 +349,4 @@ MonoBehaviour:
   enemyToSpawn: {fileID: 0}
   cubeColor: {r: 0, g: 0, b: 0, a: 0}
   playerDisplay: {fileID: 8663864097664077901, guid: 02f5f946dedc2084a805b594dff7c863, type: 3}
-  playerDisplayPanel: {fileID: 0}
+  playerPrefab: {fileID: 5947397447384606411}

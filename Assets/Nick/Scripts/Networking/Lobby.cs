@@ -6,7 +6,6 @@ namespace Networking
 {
     public class Lobby : MonoBehaviour
     {
-        [SerializeField] GameObject lobbyCanvas;
         [SerializeField] Button startButton, readyButton, leaveButton;
         [SerializeField] TMP_Dropdown modeDropdown, mapDropdown;
 
@@ -22,7 +21,18 @@ namespace Networking
         {
             NetworkPlayer localPlayer = CustomNetworkManager.LocalPlayer;
             localPlayer.StartMatch();
-            lobbyCanvas.SetActive(false);
+        }
+
+        public void OnClickLeaveMatch()
+        {
+            NetworkPlayer localPlayer = CustomNetworkManager.LocalPlayer;
+            localPlayer.LeaveMatch();
+        }
+
+        public void OnClickReady()
+        {
+            NetworkPlayer localPlayer = CustomNetworkManager.LocalPlayer;
+            localPlayer.Ready();
         }
 
         // changes the game mode
