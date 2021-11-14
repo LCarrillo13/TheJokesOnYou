@@ -6,12 +6,13 @@ namespace Networking
 {
     public class NetworkPlayer : NetworkBehaviour
     {
-        [SerializeField] GameObject playerPrefab;
-
+        #region Overrides
         // called if we are the local player and NOT a remote player
         public override void OnStartLocalPlayer()
         {
-            SceneManager.LoadScene("Lobby", LoadSceneMode.Additive);
+            Scene scene = SceneManager.GetActiveScene();
+
+            if(!scene.name.StartsWith("mode")) SceneManager.LoadScene("Lobby", LoadSceneMode.Additive);
         }
 
         // called similarly to Start() for client and host
@@ -19,6 +20,7 @@ namespace Networking
 
         // called when client or host disconnects
         public override void OnStopClient() => CustomNetworkManager.RemovePlayer(this);
+        #endregion
 
         #region Lobby 
 
