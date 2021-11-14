@@ -2891,6 +2891,7 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 8663864097664077901, guid: 02f5f946dedc2084a805b594dff7c863, type: 3}
   - {fileID: 3524917580266305646, guid: b78062d76c755c24a87bc7861e87c821, type: 3}
+  - {fileID: 2051542723824549890, guid: 9f8e59d4f8e80f14c98214c93f960941, type: 3}
   matchManager: {fileID: 3524917580266305646, guid: b78062d76c755c24a87bc7861e87c821, type: 3}
   discovery: {fileID: 954170704}
 --- !u!4 &954170706

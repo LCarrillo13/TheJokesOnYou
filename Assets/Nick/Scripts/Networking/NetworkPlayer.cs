@@ -11,8 +11,8 @@ namespace Networking
         #region Variables
         [Header("Attributes")]
         [SerializeField] float speed;
-        public TextMesh nameTag;
-        [SyncVar(hook = nameof(OnColorChanged))] public Color playerColor = Color.white;
+        [SerializeField] TextMesh nameTag;
+        //[SyncVar(hook = nameof(OnColorChanged))] public Color playerColor = Color.white;
         Material playerMaterialClone;
         [Header("Controls")]
         [SerializeField] List<KeyCode> controls = new List<KeyCode>();
@@ -25,8 +25,9 @@ namespace Networking
         [SerializeField] Vector3 raycastOffset;
         [SerializeField] LayerMask climbableLayer;
         RaycastHit hit;
-        Scene scene;
-        [SerializeField] GameObject cam;
+        Scene currentScene;
+        [SerializeField] Transform cameraMountPoint;
+        [SerializeField] GameObject playerCamera;
         #endregion
 
         #region Overrides
@@ -34,7 +35,6 @@ namespace Networking
         public override void OnStartLocalPlayer()
         {
             Scene scene = SceneManager.GetActiveScene();
-
             if(!scene.name.StartsWith("mode")) SceneManager.LoadScene("Lobby", LoadSceneMode.Additive);
         }
 
@@ -90,51 +90,52 @@ namespace Networking
 
         #endregion
 
-        #region Player Controller
-        void Awake()
-        {
-            Scene scene = SceneManager.GetActiveScene();
-            if (scene.name == "Lobby") return;
+        #region Player
 
-            if (!isLocalPlayer) return;
-            nameTag = GetComponentInChildren<TextMesh>();
-        }
+        void Awake() => currentScene = SceneManager.GetActiveScene();
 
         void Start()
         {
-            if (scene.name == "Lobby") return;
+            if (currentScene.name == "Lobby" || currentScene.name == "Empty") return;
+
             if (!isLocalPlayer) return;
-            CmdSetup();
+            Setup();
         }
 
         void Update()
         {
-            if (scene.name == "Lobby") return;
+            if (currentScene.name == "Lobby" || currentScene.name == "Empty") return;
+
             if (!isLocalPlayer) return;
-            CmdMovement();
+            Movement();
         }
 
-        [Command]
-        public void CmdSetup()
+        public void Setup()
         {
+            SetupCamera();
             RpcDisableCursor();
             RpcPopulatePositions();
             RpcCurrentScene();
-            RpcSetupCamera();
 
             Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
             CmdPlayerVisuals(PlayerNameInput.DisplayName, color);
         }
 
+        void SetupCamera()
+        {
+            GameObject playerCameraInstance = Instantiate(playerCamera);
+            NetworkServer.Spawn(playerCameraInstance);
+            playerCameraInstance.transform.SetParent(cameraMountPoint);
+            playerCameraInstance.transform.position = cameraMountPoint.position;
+        }
+
         // hides and locks the cursor to center of screen
-        [ClientRpc]
         void RpcDisableCursor()
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
 
-        [ClientRpc]
         // adds the positions used to move to the list
         void RpcPopulatePositions()
         {
@@ -144,25 +145,17 @@ namespace Networking
             positions[3] = GameObject.Find("Position4").transform;
         }
 
-        [ClientRpc]
         // gets the current scene
         void RpcCurrentScene()
         {
-            scene = SceneManager.GetActiveScene();
+            currentScene = SceneManager.GetActiveScene();
         }
 
-        [ClientRpc]
-        void RpcSetupCamera()
-        {
-            cam.SetActive(true);
-        }
-
-        [Command]
         public void CmdPlayerVisuals(string name, Color color)
         {
             // player info sent to server, then server updates sync vars which handles it on all clients
             nameTag.text = name;
-            playerColor = color;
+            //playerColor = color;
         }
 
         void OnNameChanged(string _old, string _new)
@@ -176,11 +169,8 @@ namespace Networking
             playerMaterialClone.color = _new;
             GetComponent<Renderer>().material = playerMaterialClone;
         }
-        #endregion
 
-        #region Movement
-        [Command]
-        public void CmdMovement()
+        public void Movement()
         {
             RpcAutomaticMovement();
             RpcTeleport();
@@ -188,10 +178,9 @@ namespace Networking
         }
 
         // players are always moving upwards if they are touching a 'climbable' layer
-        [ClientRpc]
         void RpcAutomaticMovement()
         {
-            if (scene.name != "map_Race") return;
+            if (currentScene.name != "mode_Race") return;
 
             // Debug.DrawRay(transform.position + raycastOffset, Vector3.forward, Color.red, 5);
             if (Physics.Raycast(transform.position + raycastOffset, Vector3.forward, out hit, 5, climbableLayer))
@@ -201,7 +190,6 @@ namespace Networking
         }
 
         // teleports the player to 1 of 4 different positions depending on which key they press (1, 2, 3, 4)
-        [ClientRpc]
         void RpcTeleport()
         {
             if (hasTeleported) return;
@@ -229,7 +217,6 @@ namespace Networking
         }
 
         // players can only teleport every few seconds
-        [ClientRpc]
         void RpcTeleportCooldown()
         {
             if (!hasTeleported) return;
@@ -241,7 +228,7 @@ namespace Networking
             }
             else teleportTimer += Time.deltaTime;
         }
-
+        
         #endregion
     }
 }
