@@ -14,7 +14,7 @@ namespace Networking
         public enum Map { Day, Night }
 
         public Mode mode;
-        public Map map;
+        public static Map map;
 
         [SerializeField] GameObject dayMap, nightMap;
 
@@ -33,11 +33,7 @@ namespace Networking
 
         void OnReceivedMatchStarted(bool _old, bool _new)
         {  
-            if (_new)
-            {
-                ChooseMode();
-                ChooseMap();
-            }
+            if (_new) ChooseMode();
         }
 
         void ChooseMode()
@@ -58,7 +54,7 @@ namespace Networking
             }
         }
 
-        void ChooseMap()
+        public void ChooseMap()
         {
             switch (map)
             {
@@ -67,7 +63,7 @@ namespace Networking
                     NetworkServer.Spawn(dayMapInstance);
                     break;
                 case Map.Night: // if night map was chosen
-                    GameObject nightMapInstance = Instantiate(dayMap);
+                    GameObject nightMapInstance = Instantiate(nightMap);
                     NetworkServer.Spawn(nightMapInstance);
                     break;
                 default:

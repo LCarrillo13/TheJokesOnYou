@@ -66,5 +66,5 @@ MonoBehaviour:
   matchStarted: 0
   mode: 0
   map: 0
-  dayMap: {fileID: 290517648721628279, guid: 4370f45b6eb652242b5d7cb2f1dd9999, type: 3}
-  nightMap: {fileID: 5913679325641120952, guid: ba6a2219705cbe94a86c7d76ec690f6c, type: 3}
+  dayMap: {fileID: 2545858207564007760, guid: 30afea014f4718c42b22c9f9e155317d, type: 3}
+  nightMap: {fileID: 6994658975197466319, guid: 1df2ac88fd7a839429caa2e5733b4f7d, type: 3}

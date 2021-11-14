@@ -39,6 +39,6 @@ namespace Networking
         public void ChangeMode(int index) => MatchManager.instance.mode = (MatchManager.Mode)index;
 
         // changes the map 
-        public void ChangeMap(int index) => MatchManager.instance.map = (MatchManager.Map)index;
+        public void ChangeMap(int index) => MatchManager.map = (MatchManager.Map)index;
     } 
 }

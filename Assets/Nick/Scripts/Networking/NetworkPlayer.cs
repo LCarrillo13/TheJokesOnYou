@@ -12,7 +12,7 @@ namespace Networking
         [Header("Attributes")]
         [SerializeField] float speed;
         [SerializeField] TextMesh nameTag;
-        //[SyncVar(hook = nameof(OnColorChanged))] public Color playerColor = Color.white;
+        [SyncVar(hook = nameof(OnColorChanged))] public Color playerColor = Color.white;
         Material playerMaterialClone;
         [Header("Controls")]
         [SerializeField] List<KeyCode> controls = new List<KeyCode>();
@@ -113,9 +113,9 @@ namespace Networking
         public void Setup()
         {
             SetupCamera();
-            RpcDisableCursor();
-            RpcPopulatePositions();
-            RpcCurrentScene();
+            DisableCursor();
+            PopulatePositions();
+            CurrentScene();
 
             Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
             CmdPlayerVisuals(PlayerNameInput.DisplayName, color);
@@ -123,21 +123,24 @@ namespace Networking
 
         void SetupCamera()
         {
+            // spawn camera for this player
             GameObject playerCameraInstance = Instantiate(playerCamera);
             NetworkServer.Spawn(playerCameraInstance);
+
+            // attach camera to this player
             playerCameraInstance.transform.SetParent(cameraMountPoint);
             playerCameraInstance.transform.position = cameraMountPoint.position;
         }
 
         // hides and locks the cursor to center of screen
-        void RpcDisableCursor()
+        void DisableCursor()
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
 
         // adds the positions used to move to the list
-        void RpcPopulatePositions()
+        void PopulatePositions()
         {
             positions[0] = GameObject.Find("Position1").transform;
             positions[1] = GameObject.Find("Position2").transform;
@@ -146,7 +149,7 @@ namespace Networking
         }
 
         // gets the current scene
-        void RpcCurrentScene()
+        void CurrentScene()
         {
             currentScene = SceneManager.GetActiveScene();
         }
@@ -155,13 +158,11 @@ namespace Networking
         {
             // player info sent to server, then server updates sync vars which handles it on all clients
             nameTag.text = name;
-            //playerColor = color;
+            playerColor = color;
         }
 
-        void OnNameChanged(string _old, string _new)
-        {
-            nameTag.text = PlayerNameInput.DisplayName;
-        }
+        void OnNameChanged(string _old, string _new) => nameTag.text = PlayerNameInput.DisplayName;
+
         void OnColorChanged(Color _old, Color _new)
         {
             nameTag.color = _new;

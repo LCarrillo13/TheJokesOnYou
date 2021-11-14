@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using Mirror;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Networking
 {
@@ -80,13 +81,12 @@ namespace Networking
         }
 
         public override void OnServerSceneChanged(string sceneName)
-        {		
-            base.OnServerSceneChanged(sceneName);
-        }
-
-        private void Update()
         {
-			
+			if (sceneName.StartsWith("mode"))
+            {
+				MatchManager.instance.ChooseMap();
+            }
+            base.OnServerSceneChanged(sceneName);
         }
     }
 }
