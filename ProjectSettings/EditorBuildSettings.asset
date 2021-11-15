@@ -24,6 +24,6 @@ EditorBuildSettings:
     path: Assets/Nick/Scenes/mode_TimeTrial.unity
     guid: 3f4d636c832b49c48974df563f612d37
   - enabled: 1
-    path: Assets/Nick/Scenes/Results.unity
+    path: Assets/Nick/Scenes/mode_Results.unity
     guid: 06fbd22d6ba7f36438dee7f90734bfdd
   m_configObjects: {}

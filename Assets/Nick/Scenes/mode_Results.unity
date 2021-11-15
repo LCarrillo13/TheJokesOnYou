@@ -370,7 +370,7 @@ GameObject:
   - component: {fileID: 369515407}
   - component: {fileID: 369515408}
   m_Layer: 5
-  m_Name: Button - Room
+  m_Name: Button - Return To Lobby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -393,7 +393,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -249.4519, y: 91.130554}
+  m_AnchoredPosition: {x: -249.45215, y: 91.130615}
   m_SizeDelta: {x: 498.9038, y: 182.26111}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &369515407
@@ -441,8 +441,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1246878669}
-        m_TargetAssemblyTypeName: ReturnToRoom, Assembly-CSharp
-        m_MethodName: Return
+        m_TargetAssemblyTypeName: Networking.Results, Assembly-CSharp
+        m_MethodName: OnClickReturnToLobby
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -894,8 +894,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1246878670}
-  - component: {fileID: 1246878669}
   - component: {fileID: 1246878671}
+  - component: {fileID: 1246878669}
   m_Layer: 0
   m_Name: Manager - General
   m_TagString: Untagged
@@ -912,11 +912,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1246878668}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cbcc3b4aac021a4d95894e79c2311a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 6aa68163ce95dbb4fa6cae68f885468d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  returnToLobbyButton: {fileID: 369515407}
+  winnerText: {fileID: 182525132}
+  winnerString: 
 --- !u!4 &1246878670
 Transform:
   m_ObjectHideFlags: 0
@@ -988,7 +991,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2067944774}
   - component: {fileID: 2067944776}
-  - component: {fileID: 2067944775}
+  - component: {fileID: 2067944777}
   m_Layer: 5
   m_Name: Panel - Results
   m_TagString: Untagged
@@ -1017,23 +1020,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2067944775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2067944773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 1687516121
-  serverOnly: 1
-  visible: 0
-  m_AssetId: 
-  hasSpawned: 0
 --- !u!222 &2067944776
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1042,3 +1028,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2067944773}
   m_CullTransparentMesh: 1
+--- !u!114 &2067944777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2067944773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1

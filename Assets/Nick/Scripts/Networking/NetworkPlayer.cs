@@ -96,6 +96,20 @@ namespace Networking
         }
         #endregion
 
+        #region Results
+        public void ReturnToLobby()
+        {
+            if (!isLocalPlayer) return;
+            CmdReturnToLobby();
+        }
+
+        [Command]
+        public void CmdReturnToLobby()
+        {
+            CustomNetworkManager.Instance.ServerChangeScene("Lobby");
+        }
+        #endregion
+
         #endregion
 
         #region Player
@@ -104,7 +118,11 @@ namespace Networking
 
         void Start()
         {
-            if (currentScene.name == "Lobby" || currentScene.name == "Empty") return;
+            if (currentScene.name == "Lobby" || currentScene.name == "Empty" || currentScene.name == "mode_Results")
+            {
+                EnableCursor();
+                return;
+            }
 
             if (!isLocalPlayer) return;
             Setup();
@@ -112,7 +130,11 @@ namespace Networking
 
         void Update()
         {
-            if (currentScene.name == "Lobby" || currentScene.name == "Empty") return;
+            if (currentScene.name == "Lobby" || currentScene.name == "Empty" || currentScene.name == "mode_Results")
+            {
+                EnableCursor();
+                return;
+            }
 
             if (!isLocalPlayer) return;
             Movement();
@@ -167,6 +189,13 @@ namespace Networking
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+        }
+
+        // shows and unlocks the cursor
+        void EnableCursor()
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
         // adds the positions used to move to the list

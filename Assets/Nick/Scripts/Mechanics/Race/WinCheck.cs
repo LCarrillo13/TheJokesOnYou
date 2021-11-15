@@ -4,11 +4,16 @@ using Networking;
 public class WinCheck : MonoBehaviour
 {
     CustomNetworkManager networkManager;
+    public static string winner;
 
     void Awake() => networkManager = GameObject.Find("NetworkManager").GetComponent<CustomNetworkManager>();
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("Player")) networkManager.ServerChangeScene("Results");
+        if (collision.collider.CompareTag("Player"))
+        {
+            winner = collision.collider.GetComponentInChildren<TextMesh>().text;
+            networkManager.ServerChangeScene("mode_Results");
+        }
     }    
 }
