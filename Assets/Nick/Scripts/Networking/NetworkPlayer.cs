@@ -11,7 +11,9 @@ namespace Networking
         #region Variables
         [Header("Attributes")]
         [SerializeField] float speed;
+        [Header("Player Customisation")]
         [SerializeField] TextMesh nameTag;
+        [SyncVar(hook = nameof(OnNameChanged))] public string playerName;
         [SyncVar(hook = nameof(OnColorChanged))] public Color playerColor = Color.white;
         Material playerMaterialClone;
         [Header("Controls")]
@@ -36,6 +38,11 @@ namespace Networking
         {
             Scene scene = SceneManager.GetActiveScene();
             if(!scene.name.StartsWith("mode")) SceneManager.LoadScene("Lobby", LoadSceneMode.Additive);
+
+            // player name and color setup
+            string name = PlayerNameInput.DisplayName;
+            Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+            CmdPlayerVisuals(name, color);
         }
 
         // called similarly to Start() for client and host
@@ -116,9 +123,6 @@ namespace Networking
             DisableCursor();
             PopulatePositions();
             CurrentScene();
-
-            Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-            CmdPlayerVisuals(PlayerNameInput.DisplayName, color);
         }
 
         void SetupCamera()
@@ -154,14 +158,16 @@ namespace Networking
             currentScene = SceneManager.GetActiveScene();
         }
 
+        #region Player Customation
+        // player info sent to server, then server updates sync vars which handles it on all clients
+        [Command]
         public void CmdPlayerVisuals(string name, Color color)
         {
-            // player info sent to server, then server updates sync vars which handles it on all clients
-            nameTag.text = name;
+            playerName = name;
             playerColor = color;
         }
-
-        void OnNameChanged(string _old, string _new) => nameTag.text = PlayerNameInput.DisplayName;
+        
+        void OnNameChanged(string _old, string _new) => nameTag.text = playerName;
 
         void OnColorChanged(Color _old, Color _new)
         {
@@ -170,16 +176,17 @@ namespace Networking
             playerMaterialClone.color = _new;
             GetComponent<Renderer>().material = playerMaterialClone;
         }
+        #endregion
 
         public void Movement()
         {
-            RpcAutomaticMovement();
-            RpcTeleport();
-            RpcTeleportCooldown();
+            AutomaticMovement();
+            Teleport();
+            TeleportCooldown();
         }
 
         // players are always moving upwards if they are touching a 'climbable' layer
-        void RpcAutomaticMovement()
+        void AutomaticMovement()
         {
             if (currentScene.name != "mode_Race") return;
 
@@ -191,7 +198,7 @@ namespace Networking
         }
 
         // teleports the player to 1 of 4 different positions depending on which key they press (1, 2, 3, 4)
-        void RpcTeleport()
+        void Teleport()
         {
             if (hasTeleported) return;
 
@@ -218,7 +225,7 @@ namespace Networking
         }
 
         // players can only teleport every few seconds
-        void RpcTeleportCooldown()
+        void TeleportCooldown()
         {
             if (!hasTeleported) return;
 
