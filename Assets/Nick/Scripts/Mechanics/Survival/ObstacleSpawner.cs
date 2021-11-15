@@ -16,7 +16,6 @@ public class ObstacleSpawner : MonoBehaviour
         NetworkServer.Spawn(obstacle);
     }
 
-
     // returns a random spawn point from a list
     Transform RandomSpawnPoint()
     {

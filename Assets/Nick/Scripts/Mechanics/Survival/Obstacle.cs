@@ -8,13 +8,13 @@ public class Obstacle : NetworkBehaviour
 
     void Update() => Move();
 
-    void Move() => transform.Translate(Vector3.down * speed * Time.deltaTime);
+    void Move() => transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
     void OnCollisionEnter(Collision other)
     {    
         if(other.collider.CompareTag("Player"))
         {
-            NetworkServer.Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
         }
     }
 
