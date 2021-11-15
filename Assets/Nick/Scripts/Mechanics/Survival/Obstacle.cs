@@ -1,10 +1,13 @@
 using Mirror;
-
+using Networking;
 using UnityEngine;
 
 public class Obstacle : NetworkBehaviour
 {
     [SerializeField] float speed;
+    WinConditions winConditions;
+
+    void Awake() => winConditions = GameObject.Find("Manager - General").GetComponent<WinConditions>();
 
     void Update() => Move();
 
@@ -15,6 +18,7 @@ public class Obstacle : NetworkBehaviour
         if(other.collider.CompareTag("Player"))
         {
             other.gameObject.SetActive(false);
+            winConditions.players -= 1;
         }
     }
 

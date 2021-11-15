@@ -8,14 +8,20 @@ namespace Networking
     public class Results : NetworkBehaviour
     {
         [SerializeField] Button returnToLobbyButton;
-        public TextMeshProUGUI winnerText;       
+        public TextMeshProUGUI winnerText;
+        [SyncVar] public string winnerName;
 
         void Awake() => returnToLobbyButton.interactable = CustomNetworkManager.Instance.IsHost;
+
+        void Start() => winnerName = WinConditions.winner;
 
         public void OnClickReturnToLobby()
         {
             NetworkPlayer localPlayer = CustomNetworkManager.LocalPlayer;
             localPlayer.ReturnToLobby();
-        }      
+        }
+
+        public void CmdUpdateWinner() => winnerText.text = winnerName;
     } 
+
 }
