@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.UI;
 using Mirror;
 using TMPro;
 
@@ -11,7 +12,8 @@ namespace Networking
         #region Variables
         [Header("Attributes")]
         [SerializeField] float speed;
-        [Header("Player Customisation")]
+        [SerializeField] Rigidbody rb;
+        [Header("Customisation")]
         [SerializeField] TextMesh nameTag;
         [SyncVar(hook = nameof(OnNameChanged))] public string playerName;
         [SyncVar(hook = nameof(OnColorChanged))] public Color playerColor = Color.white;
@@ -20,17 +22,15 @@ namespace Networking
         [SerializeField] List<KeyCode> controls = new List<KeyCode>();
         [SerializeField] List<Transform> positions = new List<Transform>();
         [Header("Teleportation")]
+        [SerializeField] Image teleportCooldownSlider;
         [SerializeField] float teleportDelay;
         bool hasTeleported;
         float teleportTimer;
-        [SerializeField] Rigidbody rb;
-        [Header("Climbable Check")]
-        [SerializeField] Vector3 raycastOffset;
-        [SerializeField] LayerMask climbableLayer;
-        RaycastHit hit;
+        [Header("Camera")]
         Scene currentScene;
         [SerializeField] Transform cameraMountPoint;
         [SerializeField] GameObject playerCamera;
+        [SerializeField] Canvas playerCanvas;
         #endregion
 
         #region Overrides
@@ -156,6 +156,10 @@ namespace Networking
             // attach camera to this player
             playerCameraInstance.transform.SetParent(cameraMountPoint);
             playerCameraInstance.transform.position = cameraMountPoint.position;
+
+            // set the player's canvas to be rendered by this camera
+            playerCanvas.gameObject.SetActive(true);
+            playerCanvas.worldCamera = playerCameraInstance.GetComponent<Camera>();
         }
 
         // hides and locks the cursor to center of screen
@@ -241,7 +245,11 @@ namespace Networking
                 hasTeleported = false;
                 teleportTimer = 0;
             }
-            else teleportTimer += Time.deltaTime;
+            else
+            {
+                teleportTimer += Time.deltaTime;
+                teleportCooldownSlider.fillAmount = teleportTimer;
+            }
         }
 
         void PlayerDeath()
