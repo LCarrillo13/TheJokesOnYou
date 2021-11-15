@@ -23,6 +23,7 @@ namespace Networking
         [SerializeField] float teleportDelay;
         bool hasTeleported;
         float teleportTimer;
+        [SerializeField] Rigidbody rb;
         [Header("Climbable Check")]
         [SerializeField] Vector3 raycastOffset;
         [SerializeField] LayerMask climbableLayer;
@@ -117,6 +118,27 @@ namespace Networking
             Movement();
         }
 
+        #region Player Customation
+        // player info sent to server, then server updates sync vars which handles it on all clients
+        [Command]
+        public void CmdPlayerVisuals(string name, Color color)
+        {
+            playerName = name;
+            playerColor = color;
+        }
+        
+        void OnNameChanged(string _old, string _new) => nameTag.text = playerName;
+
+        void OnColorChanged(Color _old, Color _new)
+        {
+            nameTag.color = _new;
+            playerMaterialClone = new Material(GetComponent<Renderer>().material);
+            playerMaterialClone.color = _new;
+            GetComponent<Renderer>().material = playerMaterialClone;
+        }
+        #endregion
+
+        #region Player Setup
         public void Setup()
         {
             SetupCamera();
@@ -157,44 +179,21 @@ namespace Networking
         {
             currentScene = SceneManager.GetActiveScene();
         }
-
-        #region Player Customation
-        // player info sent to server, then server updates sync vars which handles it on all clients
-        [Command]
-        public void CmdPlayerVisuals(string name, Color color)
-        {
-            playerName = name;
-            playerColor = color;
-        }
-        
-        void OnNameChanged(string _old, string _new) => nameTag.text = playerName;
-
-        void OnColorChanged(Color _old, Color _new)
-        {
-            nameTag.color = _new;
-            playerMaterialClone = new Material(GetComponent<Renderer>().material);
-            playerMaterialClone.color = _new;
-            GetComponent<Renderer>().material = playerMaterialClone;
-        }
         #endregion
 
+        #region Player Movement
         public void Movement()
         {
             AutomaticMovement();
             Teleport();
             TeleportCooldown();
+            PlayerDeath();
         }
 
-        // players are always moving upwards if they are touching a 'climbable' layer
         void AutomaticMovement()
         {
             if (currentScene.name != "mode_Race") return;
-
-            // Debug.DrawRay(transform.position + raycastOffset, Vector3.forward, Color.red, 5);
-            if (Physics.Raycast(transform.position + raycastOffset, Vector3.forward, out hit, 5, climbableLayer))
-            {
-                if (hit.collider) transform.Translate(Vector3.up * speed * Time.deltaTime);
-            }
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
 
         // teleports the player to 1 of 4 different positions depending on which key they press (1, 2, 3, 4)
@@ -204,23 +203,31 @@ namespace Networking
 
             if (Input.GetKeyDown(controls[0]))
             {
-                transform.position = new Vector3(positions[0].position.x, transform.position.y, -3);
+                rb.useGravity = false;
+                transform.position = new Vector3(positions[0].position.x, 3, transform.position.z);
                 hasTeleported = true;
+                rb.useGravity = true;
             }
             else if (Input.GetKeyDown(controls[1]))
             {
-                transform.position = new Vector3(positions[1].position.x, transform.position.y, -3);
+                rb.useGravity = false;
+                transform.position = new Vector3(positions[1].position.x, 3, transform.position.z);
                 hasTeleported = true;
+                rb.useGravity = true;
             }
             else if (Input.GetKeyDown(controls[2]))
             {
-                transform.position = new Vector3(positions[2].position.x, transform.position.y, -3);
+                rb.useGravity = false;
+                transform.position = new Vector3(positions[2].position.x, 3, transform.position.z);
                 hasTeleported = true;
+                rb.useGravity = true;
             }
             else if (Input.GetKeyDown(controls[3]))
             {
-                transform.position = new Vector3(positions[3].position.x, transform.position.y, -3);
+                rb.useGravity = false;
+                transform.position = new Vector3(positions[3].position.x, 3, transform.position.z);
                 hasTeleported = true;
+                rb.useGravity = true;
             }
         }
 
@@ -236,7 +243,19 @@ namespace Networking
             }
             else teleportTimer += Time.deltaTime;
         }
-        
+
+        void PlayerDeath()
+        {
+            if (transform.position.y < -5)
+            {
+                // choose random starting position to respawn
+                int index = Random.Range(0, positions.Count);
+                // respawn player back at the start
+                transform.position = positions[index].transform.position;
+            }
+        }
+        #endregion
+
         #endregion
     }
 }
