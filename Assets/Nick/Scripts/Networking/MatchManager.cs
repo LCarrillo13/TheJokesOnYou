@@ -18,6 +18,8 @@ namespace Networking
 
         [SerializeField] GameObject dayMap, nightMap;
 
+        Scene currentScene;
+
         void Awake()
         {
             if (instance == null) instance = this;
@@ -28,7 +30,7 @@ namespace Networking
             }
 
             networkManager = CustomNetworkManager.Instance;
-
+            currentScene = SceneManager.GetActiveScene();
         }
 
         void OnReceivedMatchStarted(bool _old, bool _new)
@@ -72,6 +74,11 @@ namespace Networking
         }
 
         [Server]
-        public void StartMatch() => matchStarted = true;       
+        public void StartMatch() => matchStarted = true;
+
+        void Update()
+        {
+            if (currentScene.name != "mode_Survival") return;
+        }
     } 
 }

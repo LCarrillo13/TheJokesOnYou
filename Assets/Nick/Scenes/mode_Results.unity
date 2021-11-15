@@ -919,7 +919,6 @@ MonoBehaviour:
   syncInterval: 0.1
   returnToLobbyButton: {fileID: 369515407}
   winnerText: {fileID: 182525132}
-  winnerString: 
 --- !u!4 &1246878670
 Transform:
   m_ObjectHideFlags: 0
