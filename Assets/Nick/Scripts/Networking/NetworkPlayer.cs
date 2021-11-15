@@ -10,6 +10,7 @@ namespace Networking
     public class NetworkPlayer : NetworkBehaviour
     {
         #region Variables
+        Results results;
         [Header("Attributes")]
         [SerializeField] float speed;
         [SerializeField] Rigidbody rb;
@@ -17,6 +18,7 @@ namespace Networking
         [SerializeField] TextMesh nameTag;
         [SyncVar(hook = nameof(OnNameChanged))] public string playerName;
         [SyncVar(hook = nameof(OnColorChanged))] public Color playerColor = Color.white;
+        [SyncVar(hook = nameof(OnWinnerChanged))] public string winner;
         Material playerMaterialClone;
         [Header("Controls")]
         [SerializeField] List<KeyCode> controls = new List<KeyCode>();
@@ -44,6 +46,10 @@ namespace Networking
             string name = PlayerNameInput.DisplayName;
             Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
             CmdPlayerVisuals(name, color);
+
+            // if winner
+            string winner = WinCheck.winner;
+            CmdChangeWinner(winner);
         }
 
         // called similarly to Start() for client and host
@@ -114,7 +120,12 @@ namespace Networking
 
         #region Player
 
-        void Awake() => currentScene = SceneManager.GetActiveScene();
+        void Awake()
+        {
+            currentScene = SceneManager.GetActiveScene();
+            if (currentScene.name != "mode_Results") return;
+            results = GameObject.Find("Manager - General").GetComponent<Results>();
+        }
 
         void Start()
         {
@@ -158,6 +169,11 @@ namespace Networking
             playerMaterialClone.color = _new;
             GetComponent<Renderer>().material = playerMaterialClone;
         }
+
+        public void OnWinnerChanged(string _old, string _new) => results.winnerText.text = winner + " is the pro gamer!";
+
+        [Command]
+        public void CmdChangeWinner(string name) => winner = name;
         #endregion
 
         #region Player Setup

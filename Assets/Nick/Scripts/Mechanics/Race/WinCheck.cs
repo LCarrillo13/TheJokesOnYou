@@ -1,19 +1,22 @@
 using UnityEngine;
 using Networking;
 
-public class WinCheck : MonoBehaviour
+namespace Networking
 {
-    CustomNetworkManager networkManager;
-    public static string winner;
-
-    void Awake() => networkManager = GameObject.Find("NetworkManager").GetComponent<CustomNetworkManager>();
-
-    void OnCollisionEnter(Collision collision)
+    public class WinCheck : MonoBehaviour
     {
-        if (collision.collider.CompareTag("Player"))
+        CustomNetworkManager networkManager;
+        public static string winner = string.Empty;
+
+        void Awake() => networkManager = GameObject.Find("NetworkManager").GetComponent<CustomNetworkManager>();
+
+        void OnCollisionEnter(Collision collision)
         {
-            winner = collision.collider.GetComponentInChildren<TextMesh>().text;
-            networkManager.ServerChangeScene("mode_Results");
+            if (collision.collider.CompareTag("Player"))
+            {
+                winner = collision.collider.GetComponentInChildren<TextMesh>().text;
+                networkManager.ServerChangeScene("mode_Results");
+            }
         }
-    }    
+    } 
 }
