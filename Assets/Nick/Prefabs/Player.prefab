@@ -490,7 +490,6 @@ MonoBehaviour:
   nameTag: {fileID: 5391408989236910521}
   playerName: 
   playerColor: {r: 1, g: 1, b: 1, a: 1}
-  winner: 
   controls: 31000000320000003300000034000000
   positions:
   - {fileID: 0}

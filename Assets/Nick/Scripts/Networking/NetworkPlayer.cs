@@ -223,6 +223,7 @@ namespace Networking
         #region Player Movement
         public void Movement()
         {
+            if (!CustomNetworkManager.Instance.canMove) return;
             AutomaticMovement();
             Teleport();
             TeleportCooldown();
@@ -238,7 +239,7 @@ namespace Networking
         // teleports the player to 1 of 4 different positions depending on which key they press (1, 2, 3, 4)
         void Teleport()
         {
-            if (hasTeleported) return;
+            if (hasTeleported || !CanTeleport()) return;
 
             if (Input.GetKeyDown(controls[0]))
             {
@@ -287,6 +288,17 @@ namespace Networking
             }
         }
 
+        // checks if the player can telport by detecting if they are on the platform or not
+        bool CanTeleport()
+        {        
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 3)) 
+            {
+                if (hit.collider) return true;
+            }
+            return false;
+        }
+
+        // player gets respawned if they fall off the platforms
         void PlayerDeath()
         {
             if (transform.position.y < -5)
