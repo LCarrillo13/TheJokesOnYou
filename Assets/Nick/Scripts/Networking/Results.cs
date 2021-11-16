@@ -13,7 +13,11 @@ namespace Networking
 
         void Awake() => returnToLobbyButton.interactable = CustomNetworkManager.Instance.IsHost;
 
-        void Start() => winnerName = WinConditions.winner;
+        void Start()
+        {
+            winnerName = WinConditions.winner;
+            CustomNetworkManager.Instance.canMove = false;
+        }
 
         public void OnClickReturnToLobby()
         {

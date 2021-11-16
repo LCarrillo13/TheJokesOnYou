@@ -25,7 +25,7 @@ namespace Networking
         {
             GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
             players = playerObjects.Length;
-
+            print(players);
             if (players == 1)
             {
                 foreach (GameObject player in playerObjects)
