@@ -84,7 +84,7 @@ namespace Networking
 
         public override void OnServerSceneChanged(string sceneName)
         {
-			if (sceneName.StartsWith("mode"))
+			if (sceneName.StartsWith("mode") && sceneName != "mode_Results")
             {
 				countdown = GameObject.Find("Manager - General").GetComponent<CountdownTimer>();
 				MatchManager.instance.ChooseMap();
