@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.030882336, g: 0.16749954, b: 0.38030443, a: 1}
+  m_IndirectSpecularColor: {r: 0.030882368, g: 0.1674996, b: 0.38030443, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -649,6 +649,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 253366365}
     m_Modifications:
+    - target: {fileID: 3524917580266305632, guid: b78062d76c755c24a87bc7861e87c821, type: 3}
+      propertyPath: mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3524917580266305633, guid: b78062d76c755c24a87bc7861e87c821, type: 3}
       propertyPath: sceneId
       value: 2693888618
