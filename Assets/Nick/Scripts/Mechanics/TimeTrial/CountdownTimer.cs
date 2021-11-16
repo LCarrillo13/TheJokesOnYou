@@ -1,45 +1,47 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using TMPro;
 
-public class CountdownTimer : NetworkBehaviour
+namespace Networking
 {
-    [SerializeField] private int startTime;
-    [SerializeField] private float gameTimerCount;
-    [SerializeField] private double currentTime;
-    // Start is called before the first frame update
-    void Start()
+    public class CountdownTimer : NetworkBehaviour
     {
-        currentTime = NetworkTime.time;
-    }
+        [SerializeField] TextMeshProUGUI countdownText;
+        [SyncVar(hook = nameof(OnCountdownChanged))] public int count;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-
-        if(isClient)
+        [Server]
+        public IEnumerator Countdown(int seconds)
         {
-            // Coroutine here
-        }
-            
-        
-    }
+            count = seconds;
 
-    IEnumerator Countdown()
-    {
-        float duration = 3f; // 3 seconds you can change this 
-        //to whatever you want
-        float normalizedTime = 0;
-        
-        while(normalizedTime <= 1f)
-        {
-            //countdownImage.fillAmount = normalizedTime;
-            normalizedTime += Time.deltaTime / duration;
-            yield return new WaitForSeconds(60f);
+            while (count > 0)
+            {
+                countdownText.text = count.ToString();
+                yield return new WaitForSeconds(1);
+                count--;
+            }
+            countdownText.text = "GO!";
+            countdownText.CrossFadeAlpha(0, 2, false);
+            RpcAllowMovement();
         }
-        // Timer code here
-        
-    }
+
+        public void OnCountdownChanged(int _old, int _new)
+        {
+            count = _new;
+            countdownText.text = count.ToString();
+
+            if (count == 0)
+            {
+                countdownText.text = "GO!";
+                countdownText.CrossFadeAlpha(0, 2, false);
+            }
+        }
+
+        [ClientRpc]
+        public void RpcAllowMovement()
+        {
+            CustomNetworkManager.Instance.canMove = true;
+        }
+    } 
 }

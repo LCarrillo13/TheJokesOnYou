@@ -8,7 +8,9 @@ namespace Networking
 {
 	public class CustomNetworkManager : NetworkManager
 	{
+		public bool canMove;
 		[SerializeField] GameObject matchManager;
+		CountdownTimer countdown;
 
 		/// <summary> A reference to the CustomNetworkManager version of the singleton. </summary>
 		public static CustomNetworkManager Instance => singleton as CustomNetworkManager;
@@ -84,7 +86,9 @@ namespace Networking
         {
 			if (sceneName.StartsWith("mode"))
             {
+				countdown = GameObject.Find("Manager - General").GetComponent<CountdownTimer>();
 				MatchManager.instance.ChooseMap();
+				StartCoroutine(countdown.Countdown(3));
             }
             base.OnServerSceneChanged(sceneName);
         }
