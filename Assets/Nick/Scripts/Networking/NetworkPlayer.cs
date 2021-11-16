@@ -119,7 +119,7 @@ namespace Networking
         {
             currentScene = SceneManager.GetActiveScene();
             if (currentScene.name != "mode_Results") return;
-            results = GameObject.Find("Manager - General").GetComponent<Results>();
+            results = FindObjectOfType<Results>();
         }
 
         void Start()
