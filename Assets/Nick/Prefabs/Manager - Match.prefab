@@ -65,6 +65,8 @@ MonoBehaviour:
   syncInterval: 0.1
   matchStarted: 0
   mode: 0
-  map: 0
   dayMap: {fileID: 2545858207564007760, guid: 30afea014f4718c42b22c9f9e155317d, type: 3}
   nightMap: {fileID: 6994658975197466319, guid: 1df2ac88fd7a839429caa2e5733b4f7d, type: 3}
+  skyboxes:
+  - {fileID: 2100000, guid: 913cb373aef578840a00d50ae4926271, type: 2}
+  - {fileID: 2100000, guid: 0ee4b5b751f7fb9449d9630f38d6562c, type: 2}

@@ -42,6 +42,7 @@ namespace Networking
 		{
 			string address = inputField.text;
 			ushort port = 7777;
+
 			if(address.Contains(":"))
 			{
 				string portID = address.Substring(address.IndexOf(":", StringComparison.Ordinal) + 1);
@@ -49,6 +50,7 @@ namespace Networking
 				address = address.Substring(0, address.IndexOf(":", StringComparison.Ordinal));
 			}
 
+			// if a string isn't a valid IP adress
 			if(!IPAddress.TryParse(address, out IPAddress _))
 			{
 				Debug.LogError($"Invalid IP: {address}");

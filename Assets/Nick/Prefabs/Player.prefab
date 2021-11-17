@@ -253,7 +253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.475, g: 0.10978774, b: 0.36995396, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -486,7 +486,6 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   speed: 5
-  rb: {fileID: 5947397446785122232}
   nameTag: {fileID: 5391408989236910521}
   playerName: 
   playerColor: {r: 1, g: 1, b: 1, a: 1}
@@ -498,9 +497,11 @@ MonoBehaviour:
   - {fileID: 0}
   teleportCooldownSlider: {fileID: 2335087783632173704}
   teleportDelay: 1
+  rb: {fileID: 5947397446785122232}
   cameraMountPoint: {fileID: 9017157624035536070}
   playerCamera: {fileID: 2051542723824549890, guid: 9f8e59d4f8e80f14c98214c93f960941, type: 3}
   playerCanvas: {fileID: 7409585454802217880}
+  tempCamera: {fileID: 0}
 --- !u!1 &7545514346046805050
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,8 +611,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 247.47736, y: 0}
+  m_SizeDelta: {x: -494.9547, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5163066039547307810
 CanvasRenderer:
@@ -634,7 +635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.248, g: 0.05738843, b: 0.19266121, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

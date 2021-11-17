@@ -10,13 +10,12 @@ namespace Networking
 	{
 		public bool canMove;
 		[SerializeField] GameObject matchManager;
-		CountdownTimer countdown;
+		Countdown countdown;
 
-		/// <summary> A reference to the CustomNetworkManager version of the singleton. </summary>
+		// A reference to the CustomNetworkManager version of the singleton. 
 		public static CustomNetworkManager Instance => singleton as CustomNetworkManager;
 
-		/// <summary> Attempts to find a player using the passed NetID, this can return null. </summary>
-		/// <param name="_id"> The NetID of the player that we are trying to find. </param>
+		// attempts to find a player using the passed NetID, this can return null.
 		[CanBeNull]
 		public static NetworkPlayer FindPlayer(uint _id)
 		{
@@ -54,41 +53,35 @@ namespace Networking
 			}
 		}
 
-		/// <summary> The internal reference to the localPlayer. </summary>
+		// internal reference to the localPlayer.
 		static NetworkPlayer localPlayer;
 
-		/// <summary> Whether or not this NetworkManager is the host. </summary>
+		//  whether or not this NetworkManager is the host.
 		public bool IsHost { get; private set; }      
 
         public CustomNetworkDiscovery discovery;
 
-		/// <summary> The dictionary of all connected players using their NetID as the key. </summary>
+		// dictionary of all connected players using their NetID as the key.
 		readonly Dictionary<uint, NetworkPlayer> players = new Dictionary<uint, NetworkPlayer>();
 
-		/// <summary>
-		/// This is invoked when a host is started.
-		/// <para>StartHost has multiple signatures, but they all cause this hook to be called.</para>
-		/// </summary>
+		// called when host is started.
 		public override void OnStartHost()
 		{
 			IsHost = true;
-			// This makes it visible on the network
 			discovery.AdvertiseServer();
 		}
 
-        /// <summary> This is called when a host is stopped. </summary>
-        public override void OnStopHost()
-        {
-            IsHost = false;
-        }
+        // called when host is stopped.
+        public override void OnStopHost() => IsHost = false;
 
+		// called after ServerChangeScene() is run
         public override void OnServerSceneChanged(string sceneName)
         {
 			if (sceneName.StartsWith("mode") && sceneName != "mode_Results")
             {
-				countdown = GameObject.Find("Manager - General").GetComponent<CountdownTimer>();
+				countdown = FindObjectOfType<Countdown>();
 				MatchManager.instance.ChooseMap();
-				StartCoroutine(countdown.Countdown(3));
+				StartCoroutine(countdown.CountingDown(3));
             }
             base.OnServerSceneChanged(sceneName);
         }

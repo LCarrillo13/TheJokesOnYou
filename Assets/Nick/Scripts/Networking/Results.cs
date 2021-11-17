@@ -9,23 +9,34 @@ namespace Networking
     {
         [SerializeField] Button returnToLobbyButton;
         public TextMeshProUGUI winnerText;
-        [SyncVar] public string winnerName;
+        [SyncVar(hook = nameof(OnWinnerFound))] public string winnerName;
 
+        // only host can interact with this button
         void Awake() => returnToLobbyButton.interactable = CustomNetworkManager.Instance.IsHost;
 
         void Start()
         {
-            winnerName = WinConditions.winner;
+            FindWinner();
             CustomNetworkManager.Instance.canMove = false;
         }
 
+        // when "winnerName" is changed below, this changes it for all clients
+        public void OnWinnerFound(string _old, string _new)
+        {
+            winnerName = _new;
+            winnerText.text = winnerName + " is the pro gamer!";
+        }
+
+        // server finds winner
+        [Server]
+        public void FindWinner() => winnerName = WinConditions.winner;
+
+        // returns all players to the lobby scene
         public void OnClickReturnToLobby()
         {
             NetworkPlayer localPlayer = CustomNetworkManager.LocalPlayer;
             localPlayer.ReturnToLobby();
         }
-
-        public void CmdUpdateWinner() => winnerText.text = winnerName;
     } 
 
 }

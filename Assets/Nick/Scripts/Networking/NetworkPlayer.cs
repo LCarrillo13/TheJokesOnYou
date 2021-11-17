@@ -13,7 +13,6 @@ namespace Networking
         Results results;
         [Header("Attributes")]
         [SerializeField] float speed;
-        [SerializeField] Rigidbody rb;
         [Header("Customisation")]
         [SerializeField] TextMesh nameTag;
         [SyncVar(hook = nameof(OnNameChanged))] public string playerName;
@@ -27,19 +26,20 @@ namespace Networking
         [SerializeField] float teleportDelay;
         bool hasTeleported;
         float teleportTimer;
-        [Header("Camera")]
+        [Header("Extra")]
         Scene currentScene;
+        [SerializeField] Rigidbody rb;
         [SerializeField] Transform cameraMountPoint;
         [SerializeField] GameObject playerCamera;
         [SerializeField] Canvas playerCanvas;
+        [SerializeField] GameObject tempCamera;
         #endregion
 
         #region Overrides
         // called if we are the local player and NOT a remote player
         public override void OnStartLocalPlayer()
         {
-            Scene scene = SceneManager.GetActiveScene();
-            if(!scene.name.StartsWith("mode")) SceneManager.LoadScene("Lobby", LoadSceneMode.Additive);
+            if(!currentScene.name.StartsWith("mode")) SceneManager.LoadScene("Lobby", LoadSceneMode.Additive);
 
             // player name and color setup
             string name = PlayerNameInput.DisplayName;
@@ -119,14 +119,14 @@ namespace Networking
         {
             currentScene = SceneManager.GetActiveScene();
             if (currentScene.name != "mode_Results") return;
-            results = GameObject.Find("Manager - General").GetComponent<Results>();
+            results = FindObjectOfType<Results>();
         }
 
         void Start()
         {
             if (currentScene.name == "Lobby" || currentScene.name == "Empty" || currentScene.name == "mode_Results")
             {
-                EnableCursor();
+                UpdateCursor(CursorLockMode.None, true);
                 return;
             }
 
@@ -138,7 +138,6 @@ namespace Networking
         {
             if (currentScene.name == "Lobby" || currentScene.name == "Empty" || currentScene.name == "mode_Results")
             {
-                EnableCursor();
                 return;
             }
 
@@ -170,38 +169,33 @@ namespace Networking
         public void Setup()
         {
             SetupCamera();
-            DisableCursor();
+            UpdateCursor(CursorLockMode.Locked, false);
             PopulatePositions();
-            CurrentScene();
         }
 
-        void SetupCamera()
+        // sets up player camera
+        public void SetupCamera()
         {
-            // spawn camera for this player
-            GameObject playerCameraInstance = Instantiate(playerCamera);
-            NetworkServer.Spawn(playerCameraInstance);
+            // create camera
+            GameObject c = Instantiate(playerCamera);
 
-            // attach camera to this player
-            playerCameraInstance.transform.SetParent(cameraMountPoint);
-            playerCameraInstance.transform.position = cameraMountPoint.position;
+            // attach camera
+            c.transform.SetParent(cameraMountPoint);
+            c.transform.position = cameraMountPoint.position;
 
-            // set the player's canvas to be rendered by this camera
+            // set canvas to be rendered by this camera
             playerCanvas.gameObject.SetActive(true);
-            playerCanvas.worldCamera = playerCameraInstance.GetComponent<Camera>();
+            playerCanvas.worldCamera = c.GetComponent<Camera>();
+
+            // spawn camera
+            NetworkServer.Spawn(c);
         }
 
-        // hides and locks the cursor to center of screen
-        void DisableCursor()
+        // updates cursor lockmode and visibility
+        void UpdateCursor(CursorLockMode mode, bool visible)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-
-        // shows and unlocks the cursor
-        void EnableCursor()
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            Cursor.lockState = mode;
+            Cursor.visible = visible;
         }
 
         // adds the positions used to move to the list
@@ -212,18 +206,13 @@ namespace Networking
             positions[2] = GameObject.Find("Position3").transform;
             positions[3] = GameObject.Find("Position4").transform;
         }
-
-        // gets the current scene
-        void CurrentScene()
-        {
-            currentScene = SceneManager.GetActiveScene();
-        }
         #endregion
 
         #region Player Movement
         public void Movement()
         {
             if (!CustomNetworkManager.Instance.canMove) return;
+
             AutomaticMovement();
             Teleport();
             TeleportCooldown();

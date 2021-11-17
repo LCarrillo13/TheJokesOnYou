@@ -1,5 +1,4 @@
 using Mirror;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 
 namespace Networking
@@ -9,16 +8,12 @@ namespace Networking
         CustomNetworkManager networkManager;
         public static MatchManager instance = null;
         [SyncVar(hook = nameof(OnReceivedMatchStarted))] public bool matchStarted = false;
-
         public enum Mode { Race, Survival, TimeTrial }
         public enum Map { Day, Night }
-
         public Mode mode;
         public static Map map;
-
         [SerializeField] GameObject dayMap, nightMap;
 
-        Scene currentScene;
 
         void Awake()
         {
@@ -30,7 +25,6 @@ namespace Networking
             }
 
             networkManager = CustomNetworkManager.Instance;
-            currentScene = SceneManager.GetActiveScene();
         }
 
         void OnReceivedMatchStarted(bool _old, bool _new)
@@ -75,10 +69,5 @@ namespace Networking
 
         [Server]
         public void StartMatch() => matchStarted = true;
-
-        void Update()
-        {
-            if (currentScene.name != "mode_Survival") return;
-        }
     } 
 }
