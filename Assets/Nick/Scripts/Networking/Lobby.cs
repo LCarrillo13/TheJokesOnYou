@@ -5,7 +5,7 @@ using Mirror;
 
 namespace Networking
 {
-    public class Lobby : MonoBehaviour
+    public class Lobby : NetworkBehaviour
     {
         [SerializeField] Button startButton, readyButton, leaveButton;
         [SerializeField] TMP_Dropdown modeDropdown, mapDropdown;
@@ -13,9 +13,9 @@ namespace Networking
         // only the host can interact with certain GUI elements
         void Awake()
         {
-            startButton.interactable = CustomNetworkManager.Instance.IsHost;
-            modeDropdown.interactable = CustomNetworkManager.Instance.IsHost;
-            mapDropdown.interactable = CustomNetworkManager.Instance.IsHost;
+            startButton.gameObject.SetActive(CustomNetworkManager.Instance.IsHost);
+            modeDropdown.gameObject.SetActive(CustomNetworkManager.Instance.IsHost);
+            mapDropdown.gameObject.SetActive(CustomNetworkManager.Instance.IsHost);
         }
 
         public void OnClickStartMatch()

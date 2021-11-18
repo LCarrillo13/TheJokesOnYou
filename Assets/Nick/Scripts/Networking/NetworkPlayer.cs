@@ -33,6 +33,7 @@ namespace Networking
         [SerializeField] GameObject playerCamera;
         [SerializeField] Canvas playerCanvas;
         [SerializeField] GameObject tempCamera;
+        [SerializeField] GameObject mobileButton1, mobileButton2, mobileButton3, mobileButton4;
         #endregion
 
         #region Overrides
@@ -145,7 +146,7 @@ namespace Networking
             Movement();
         }
 
-        #region Player Customation
+        #region Player Customisation
         // player info sent to server, then server updates sync vars which handles it on all clients
         [Command]
         public void CmdPlayerVisuals(string name, Color color)
@@ -214,7 +215,7 @@ namespace Networking
             if (!CustomNetworkManager.Instance.canMove) return;
 
             AutomaticMovement();
-            Teleport();
+            DesktopTeleport();
             TeleportCooldown();
             PlayerDeath();
         }
@@ -226,7 +227,7 @@ namespace Networking
         }
 
         // teleports the player to 1 of 4 different positions depending on which key they press (1, 2, 3, 4)
-        void Teleport()
+        void DesktopTeleport()
         {
             if (hasTeleported || !CanTeleport()) return;
 
@@ -258,6 +259,42 @@ namespace Networking
                 hasTeleported = true;
                 rb.useGravity = true;
             }
+        }
+
+        public void TeleportToPosition1()
+        {
+            if (hasTeleported || !CanTeleport()) return;
+            rb.useGravity = false;
+            transform.position = new Vector3(positions[0].position.x, 3, transform.position.z);
+            hasTeleported = true;
+            rb.useGravity = true;
+        }
+
+        public void TeleportToPosition2()
+        {
+            if (hasTeleported || !CanTeleport()) return;
+            rb.useGravity = false;
+            transform.position = new Vector3(positions[1].position.x, 3, transform.position.z);
+            hasTeleported = true;
+            rb.useGravity = true;
+        }
+
+        public void TeleportToPosition3()
+        {
+            if (hasTeleported || !CanTeleport()) return;
+            rb.useGravity = false;
+            transform.position = new Vector3(positions[2].position.x, 3, transform.position.z);
+            hasTeleported = true;
+            rb.useGravity = true;
+        }
+
+        public void TeleportToPosition4()
+        {
+            if (hasTeleported || !CanTeleport()) return;
+            rb.useGravity = false;
+            transform.position = new Vector3(positions[3].position.x, 3, transform.position.z);
+            hasTeleported = true;
+            rb.useGravity = true;
         }
 
         // players can only teleport every few seconds
