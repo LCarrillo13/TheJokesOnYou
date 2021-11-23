@@ -3,7 +3,12 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
+
+using System;
+
 using TMPro;
+
+using Random = UnityEngine.Random;
 
 namespace Networking
 {
@@ -34,6 +39,8 @@ namespace Networking
         [SerializeField] Canvas playerCanvas;
         [SerializeField] GameObject tempCamera;
         [SerializeField] GameObject mobileButton1, mobileButton2, mobileButton3, mobileButton4;
+
+        private NetworkScoreboard scoreboard;
         
         #endregion
 
@@ -138,6 +145,18 @@ namespace Networking
 
         void Update()
         {
+            if(currentScene.name == "mode_TimeTrial")
+            {
+                if(scoreboard == null)
+                {
+                    scoreboard = FindObjectOfType<NetworkScoreboard>();
+                }
+                else if(!scoreboard.hasAuthority)
+                {
+                    CmdAssignAuthority(scoreboard.netIdentity);
+                }
+            }
+            
             if (currentScene.name == "Lobby" || currentScene.name == "Empty" || currentScene.name == "mode_Results")
             {
                 return;
@@ -145,6 +164,12 @@ namespace Networking
 
             if (!isLocalPlayer) return;
             Movement();
+        }
+
+        [Command]
+        private void CmdAssignAuthority(NetworkIdentity _netId)
+        {
+            _netId.AssignClientAuthority(connectionToClient);
         }
 
         #region Player Customisation
@@ -341,5 +366,16 @@ namespace Networking
         #endregion
 
         #endregion
+
+            private void OnCollisionEnter(Collision other)
+            {
+                if(currentScene.name != "mode_TimeTrial") return;
+
+                if(other.gameObject.CompareTag("Coin"))
+                {
+                    NetworkServer.Destroy(other.gameObject);
+                }
+
+            }
     }
 }

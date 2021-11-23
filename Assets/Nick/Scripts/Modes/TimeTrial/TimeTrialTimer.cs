@@ -2,6 +2,7 @@ using Mirror;
 
 using Networking;
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -15,7 +16,18 @@ public class TimeTrialTimer : NetworkBehaviour
    
     [SyncVar(hook = nameof(OnMyCountdownChanged))] public int count;
     public int delayCount = 3;
+    private NetworkScoreboard scoreboard;
 
+    public bool isTimerDone;
+
+
+    private void Awake()
+    {
+        if(scoreboard == null)
+        {
+            scoreboard = FindObjectOfType<NetworkScoreboard>();
+        }
+    }
 
     [Server]
     public IEnumerator CountingDownTimer(int _seconds)
@@ -33,6 +45,9 @@ public class TimeTrialTimer : NetworkBehaviour
             count--;
         }
         
+        yield return new WaitForSeconds(1);
+        isTimerDone = true;
+
         // End Game stuff here 
     }
 
