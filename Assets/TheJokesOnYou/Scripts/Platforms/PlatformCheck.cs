@@ -22,6 +22,10 @@ public class PlatformCheck : MonoBehaviour
     #if UNITY_STANDALONE_WIN
         Debug.Log("Stand Alone Windows");
     #endif
+        
+    #if UNITY_IOS
+      Debug.Log("Iphone");
+    #endif    
     }
 
 }

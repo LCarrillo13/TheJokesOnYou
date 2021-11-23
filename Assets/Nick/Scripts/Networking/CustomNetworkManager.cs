@@ -11,6 +11,7 @@ namespace Networking
 		public bool canMove;
 		[SerializeField] GameObject matchManager;
 		Countdown countdown;
+		private TimeTrialTimer timeTrialTimer = null;
 
 		// A reference to the CustomNetworkManager version of the singleton. 
 		public static CustomNetworkManager Instance => singleton as CustomNetworkManager;
@@ -80,8 +81,14 @@ namespace Networking
 			if (sceneName.StartsWith("mode") && sceneName != "mode_Results")
             {
 				countdown = FindObjectOfType<Countdown>();
+
 				MatchManager.instance.ChooseMap();
 				StartCoroutine(countdown.CountingDown(3));
+				if(sceneName == "mode_TimeTrial")
+				{
+					timeTrialTimer = FindObjectOfType<TimeTrialTimer>();
+					StartCoroutine(timeTrialTimer.CountingDownTimer(60));
+				}
             }
             base.OnServerSceneChanged(sceneName);
         }

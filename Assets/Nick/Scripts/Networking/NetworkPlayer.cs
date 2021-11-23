@@ -34,6 +34,7 @@ namespace Networking
         [SerializeField] Canvas playerCanvas;
         [SerializeField] GameObject tempCamera;
         [SerializeField] GameObject mobileButton1, mobileButton2, mobileButton3, mobileButton4;
+        
         #endregion
 
         #region Overrides
@@ -222,8 +223,10 @@ namespace Networking
 
         void AutomaticMovement()
         {
-            if (currentScene.name != "mode_Race") return;
+            if(currentScene.name != "mode_Race" && currentScene.name != "mode_TimeTrial") return;
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
+            //Debug.Log("automatic movement enabled");
+            
         }
 
         // teleports the player to 1 of 4 different positions depending on which key they press (1, 2, 3, 4)

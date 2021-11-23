@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -934285329041799541}
   - component: {fileID: -211916515817849559}
   - component: {fileID: -4762614335065793129}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Obstacle
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -175,4 +175,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  speed: 5
+  speed: 8
+  coinCollider: {fileID: 5907727790949439719, guid: 0462e3f5a6607ec4689bc837ad2244b8, type: 3}
