@@ -991,6 +991,7 @@ GameObject:
   - component: {fileID: 5947397447384606414}
   - component: {fileID: 5947397447384606409}
   - component: {fileID: 5916993032560564179}
+  - component: {fileID: 3825744424721005410}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1174,6 +1175,23 @@ MonoBehaviour:
   mobileButton2: {fileID: 8944618925140850532}
   mobileButton3: {fileID: 6371571077246978953}
   mobileButton4: {fileID: 26189406387484704}
+--- !u!114 &3825744424721005410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5947397447384606411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1815b1f5d9487b14ea8aeac56619562b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  playerScore: 0
+  scoreText: {fileID: 3537404497364386431, guid: e5926da0fa0de7a4ea343f31fbf335ca, type: 3}
+  savedScore: 0
 --- !u!1 &6371571077246978953
 GameObject:
   m_ObjectHideFlags: 0

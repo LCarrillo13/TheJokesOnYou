@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 using NetworkPlayer = Networking.NetworkPlayer;
 
@@ -16,6 +17,9 @@ public class ScoreSystem : NetworkBehaviour
     [SyncVar(hook = nameof(OnChangePlayerScore))] [SerializeField] public int playerScore = 0;
 
     [SerializeField] private Text scoreText;
+
+    private Scene currentScene;
+        
     
     //Script references
     //private NetworkScoreboard scoreboard;
@@ -23,7 +27,7 @@ public class ScoreSystem : NetworkBehaviour
 
     // Leaderboards tracking 
     
-    [SerializeField] [SyncVar] private int savedScore;
+    [SerializeField] [SyncVar] public int savedScore;
     private int localPlayerScore;
     private string playerID = String.Empty;
     //public int[] playerScores = new int[GameObject.FindGameObjectsWithTag("Player").Length];
@@ -39,6 +43,10 @@ public class ScoreSystem : NetworkBehaviour
 
     private void Update()
     {
+        if(currentScene.name != "mode_TimeTrial")
+        {
+            this.enabled = false;
+        }
         localPlayerScore = savedScore;
         // Assign script references
         

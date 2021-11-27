@@ -26,7 +26,8 @@ namespace Networking
 			
 			// TODO: Write Sorting algo here to sort player scores highest to lowest,
 			// TODO: set highest score as winner
-			// BUG help
+			// TODO: What am i even doing...
+			// TODO: save my sanity
 			// Parse Score int to String, then set Canvas UI Text = score string
 			// Do same thing with player names
 
@@ -35,7 +36,7 @@ namespace Networking
 				NetworkPlayer player = CustomNetworkManager.FindPlayer(pair.Key);
 				
 				// Do things with this score here
-				// 
+				// TODO Figure out how to transfer player score between scenes
 			}
 		}
 		public void AssignPlayer(uint _netId) => CmdAssignPlayer(_netId);

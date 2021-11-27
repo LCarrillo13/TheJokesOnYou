@@ -29,7 +29,11 @@ namespace Networking
 
         // server finds winner
         [Server]
-        public void FindWinner() => winnerName = WinConditions.winner;
+        public void FindWinner()
+        {
+            
+            winnerName = WinConditions.winner;
+        }
 
         // returns all players to the lobby scene
         public void OnClickReturnToLobby()
